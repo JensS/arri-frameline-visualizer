@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARRI Alexa Mini Framelines Visualizer</title>
+    <title>ARRI Framelines Visualizer - Multi-Camera Support</title>
     <style>
         * {
             margin: 0;
@@ -43,16 +43,36 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        
+
         .control-group {
             margin-bottom: 15px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 5px;
             color: #ccc;
             font-size: 14px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        select:hover {
+            border-color: #0066cc;
+        }
+
+        select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         input[type="file"] {
@@ -275,12 +295,24 @@
 </head>
 <body>
     <div class="container">
-        <h1>ARRI Alexa Mini Framelines Visualizer</h1>
-        <div class="subtitle">Visualize your framelines XML</div>
+        <h1>ARRI Framelines Visualizer</h1>
+        <div class="subtitle">Multi-camera support for all ARRI formats</div>
         
         <div class="error" id="error"></div>
-        
+
         <div class="controls">
+            <div class="control-group">
+                <label for="cameraSelect">Select Camera Model:</label>
+                <select id="cameraSelect">
+                    <option value="">-- Select Camera --</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="formatSelect">Select Format:</label>
+                <select id="formatSelect" disabled>
+                    <option value="">-- Select Camera First --</option>
+                </select>
+            </div>
             <div class="control-group">
                 <label for="xmlFile">Load Framelines XML File:</label>
                 <div style="display: flex; gap: 10px;">
@@ -339,6 +371,8 @@
     
     <footer style="text-align: center; margin-top: 30px; padding: 20px; color: #888; font-size: 14px;">
         You don't like it? Please fix it yourself :D Here's the github: <a href="https://github.com/JensS/arri-frameline-visualizer" style="color: #0066cc; text-decoration: none;">https://github.com/JensS/arri-frameline-visualizer</a>
+        <br><br>
+        <a href="https://ko-fi.com/jenssage" style="color: #0066cc; text-decoration: none;">☕ Buy me a Ko-Fi</a>
     </footer>
     
     <script>
@@ -355,17 +389,190 @@
         const xmlLibraryPopup = document.getElementById('xmlLibraryPopup');
         const closePopupBtn = document.getElementById('closePopup');
         const xmlFileList = document.getElementById('xmlFileList');
+        const cameraSelect = document.getElementById('cameraSelect');
+        const formatSelect = document.getElementById('formatSelect');
 
         const xmlFiles = ["A-Mini_4x3-2_8K_social-blackouts.xml", "A-Mini_4x3-2.8K_socials.xml"];
-        
+
         let frameData = null;
         let backgroundImage = null;
         let imageLoaded = false;
         let useGreyGrid = false;
+        let cameraFormats = null;
+        let selectedCamera = null;
+        let selectedFormat = null;
         
         // Sample image path
         const sampleImagePath = 'sample-image-jens-sage-2880-2160.jpg';
-        
+
+        // Load camera formats from JSON
+        async function loadCameraFormats() {
+            try {
+                const response = await fetch('arri_camera_formats.json');
+                cameraFormats = await response.json();
+                populateCameraDropdown();
+            } catch (error) {
+                showError('Failed to load camera formats: ' + error.message);
+                console.error(error);
+            }
+        }
+
+        // Populate camera dropdown
+        function populateCameraDropdown() {
+            if (!cameraFormats || !cameraFormats.cameras) return;
+
+            cameraSelect.innerHTML = '<option value="">-- Select Camera --</option>';
+
+            cameraFormats.cameras.forEach((camera, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                const variantText = camera.variant ? ` (${camera.variant})` : '';
+                option.textContent = `${camera.model}${variantText}`;
+                cameraSelect.appendChild(option);
+            });
+        }
+
+        // Populate format dropdown based on selected camera
+        function populateFormatDropdown(cameraIndex) {
+            formatSelect.innerHTML = '<option value="">-- Select Format --</option>';
+            formatSelect.disabled = false;
+
+            const camera = cameraFormats.cameras[cameraIndex];
+            if (!camera || !camera.formats) return;
+
+            camera.formats.forEach((format, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = format.name;
+                formatSelect.appendChild(option);
+            });
+        }
+
+        // Get aspect ratio from format
+        function getAspectRatio(format) {
+            return format.sensor_photosites.h / format.sensor_photosites.v;
+        }
+
+        // Calculate aspect ratio tolerance (5% tolerance)
+        function isAspectRatioCompatible(imageAspect, formatAspect, tolerance = 0.05) {
+            const ratio = imageAspect / formatAspect;
+            return ratio >= (1 - tolerance) && ratio <= (1 + tolerance);
+        }
+
+        // Handle camera selection
+        cameraSelect.addEventListener('change', (e) => {
+            const cameraIndex = parseInt(e.target.value);
+            if (isNaN(cameraIndex)) {
+                formatSelect.innerHTML = '<option value="">-- Select Camera First --</option>';
+                formatSelect.disabled = true;
+                selectedCamera = null;
+                selectedFormat = null;
+                cameraInfoDiv.innerHTML = '';
+                return;
+            }
+
+            selectedCamera = cameraFormats.cameras[cameraIndex];
+            selectedFormat = null;
+            populateFormatDropdown(cameraIndex);
+            updateFormatInfo();
+        });
+
+        // Handle format selection
+        formatSelect.addEventListener('change', (e) => {
+            const formatIndex = parseInt(e.target.value);
+            if (isNaN(formatIndex) || !selectedCamera) {
+                selectedFormat = null;
+                return;
+            }
+
+            selectedFormat = selectedCamera.formats[formatIndex];
+
+            // Redraw if we have frame data
+            if (frameData) {
+                drawFramelines(frameData);
+            } else {
+                drawPlaceholder();
+            }
+
+            // Update info display
+            updateFormatInfo();
+        });
+
+        // Update format info display
+        function updateFormatInfo() {
+            let infoHtml = '';
+
+            // Show selected camera information
+            if (selectedCamera) {
+                const variantText = selectedCamera.variant ? ` (${selectedCamera.variant})` : '';
+                infoHtml += `
+                    <div class="info-item">
+                        <div class="info-label">Selected Camera</div>
+                        <div class="info-value">${selectedCamera.model}${variantText}</div>
+                    </div>
+                `;
+
+                if (selectedCamera.sup_version) {
+                    infoHtml += `
+                        <div class="info-item">
+                            <div class="info-label">SUP Version</div>
+                            <div class="info-value">${selectedCamera.sup_version}</div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Show selected format information
+            if (selectedFormat) {
+                const aspectRatio = getAspectRatio(selectedFormat);
+                infoHtml += `
+                    <div class="info-item">
+                        <div class="info-label">Selected Format</div>
+                        <div class="info-value">${selectedFormat.name}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Recording Resolution</div>
+                        <div class="info-value">${selectedFormat.recording_resolution || 'N/A'}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Sensor Resolution</div>
+                        <div class="info-value">${selectedFormat.sensor_photosites.h} × ${selectedFormat.sensor_photosites.v}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Aspect Ratio</div>
+                        <div class="info-value">${aspectRatio.toFixed(2)}:1</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Sensor Active Area</div>
+                        <div class="info-value">${selectedFormat.sensor_area_mm.h} × ${selectedFormat.sensor_area_mm.v} mm</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Sensor Active Area (inches)</div>
+                        <div class="info-value">${selectedFormat.sensor_area_inch.h}" × ${selectedFormat.sensor_area_inch.v}"</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Image Circle</div>
+                        <div class="info-value">${selectedFormat.image_circle_mm} mm (${selectedFormat.image_circle_inch}")</div>
+                    </div>
+                `;
+
+                // Show codecs if available
+                if (selectedFormat.codecs && selectedFormat.codecs.length > 0) {
+                    const codecsList = selectedFormat.codecs.map(c => c.codec).join(', ');
+                    infoHtml += `
+                        <div class="info-item">
+                            <div class="info-label">Available Codecs</div>
+                            <div class="info-value">${codecsList}</div>
+                        </div>
+                    `;
+                }
+            }
+
+            if (infoHtml) {
+                cameraInfoDiv.innerHTML = infoHtml;
+            }
+        }
+
         // Set active button
         function setActiveButton(activeBtn) {
             [useCustomImageBtn, useSampleImageBtn, useGreyGridBtn].forEach(btn => {
@@ -378,6 +585,16 @@
         function loadSampleImage() {
             const img = new Image();
             img.onload = function() {
+                // Validate aspect ratio if format is selected
+                if (selectedFormat) {
+                    const imageAspect = img.width / img.height;
+                    const formatAspect = getAspectRatio(selectedFormat);
+
+                    if (!isAspectRatioCompatible(imageAspect, formatAspect)) {
+                        showError(`Sample image aspect ratio (${imageAspect.toFixed(2)}:1) does not match the selected format (${formatAspect.toFixed(2)}:1). Consider using a different background or grey grid.`);
+                    }
+                }
+
                 backgroundImage = img;
                 imageLoaded = true;
                 useGreyGrid = false;
@@ -404,11 +621,21 @@
         bgImageInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             reader.onload = (e) => {
                 const localImg = new Image();
                 localImg.onload = function() {
+                    // Validate aspect ratio if format is selected
+                    if (selectedFormat) {
+                        const imageAspect = localImg.width / localImg.height;
+                        const formatAspect = getAspectRatio(selectedFormat);
+
+                        if (!isAspectRatioCompatible(imageAspect, formatAspect)) {
+                            showError(`Image aspect ratio (${imageAspect.toFixed(2)}:1) does not match the selected format (${formatAspect.toFixed(2)}:1). Image may appear stretched or cropped.`);
+                        }
+                    }
+
                     backgroundImage = localImg;
                     imageLoaded = true;
                     useGreyGrid = false;
@@ -498,6 +725,19 @@
             });
             
             const lines = [];
+            const framelineNames = {};
+
+            // Parse frameline names
+            const framelineNameElements = xmlDoc.querySelectorAll('framelineName');
+            framelineNameElements.forEach(element => {
+                const framelineRect = element.getAttribute('framelineRect');
+                const name = element.textContent;
+                if (framelineRect && name) {
+                    framelineNames[framelineRect] = name;
+                }
+            });
+
+            // Parse lines
             const lineElements = xmlDoc.querySelectorAll('line');
             lineElements.forEach(line => {
                 const framelineRect = line.getAttribute('framelineRect');
@@ -507,25 +747,36 @@
                 const right = parseFloat(line.querySelector('right')?.textContent || '0');
                 const width = parseInt(line.querySelector('width')?.textContent || '2');
                 const color = line.querySelector('color')?.textContent || 'user';
-                
+
                 if (framelineRect) {
                     lines.push({ framelineRect, top, bottom, left, right, width, color });
                 }
             });
-            
-            return { camera, rects, lines };
+
+            return { camera, rects, lines, framelineNames };
         }
         
         function drawFramelines(data) {
-            const { camera, rects, lines } = data;
-            
-            // Set canvas size based on camera resolution with proper aspect ratio
+            const { camera, rects, lines, framelineNames } = data;
+
+            // Determine aspect ratio - use selected format if available, otherwise use camera data
+            let aspectRatio, displayWidth, displayHeight;
+            if (selectedFormat) {
+                displayWidth = selectedFormat.sensor_photosites.h;
+                displayHeight = selectedFormat.sensor_photosites.v;
+                aspectRatio = getAspectRatio(selectedFormat);
+            } else {
+                displayWidth = camera.hres;
+                displayHeight = camera.vres;
+                aspectRatio = camera.hres / camera.vres;
+            }
+
+            // Set canvas size based on aspect ratio
             // Use a target height and calculate width to maintain aspect ratio
             const targetHeight = 800;
-            const aspectRatio = camera.hres / camera.vres;
             canvas.height = targetHeight;
             canvas.width = targetHeight * aspectRatio;
-            
+
             // If width is too large, scale down proportionally
             if (canvas.width > 1200) {
                 canvas.width = 1200;
@@ -612,41 +863,154 @@
                 ctx.stroke();
             });
             
-            // Update camera info
+            // Update camera info - combine selected camera/format with XML data
             const physicalWidth = camera.physicalWidth || (camera.hres * 0.00825).toFixed(2);
             const physicalHeight = camera.physicalHeight || (camera.vres * 0.00825).toFixed(2);
             const recordingFormat = camera.recordingFormat || 'Unknown';
-            
-            cameraInfoDiv.innerHTML = `
+
+            let infoHtml = '';
+
+            // Show selected camera and format first if available
+            if (selectedCamera) {
+                const variantText = selectedCamera.variant ? ` (${selectedCamera.variant})` : '';
+                infoHtml += `
+                    <div class="info-item">
+                        <div class="info-label">Selected Camera</div>
+                        <div class="info-value">${selectedCamera.model}${variantText}</div>
+                    </div>
+                `;
+            }
+
+            if (selectedFormat) {
+                const formatAspect = getAspectRatio(selectedFormat);
+                infoHtml += `
+                    <div class="info-item">
+                        <div class="info-label">Selected Format</div>
+                        <div class="info-value">${selectedFormat.name}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Format Resolution</div>
+                        <div class="info-value">${selectedFormat.sensor_photosites.h} × ${selectedFormat.sensor_photosites.v} (${formatAspect.toFixed(2)}:1)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Sensor Active Area</div>
+                        <div class="info-value">${selectedFormat.sensor_area_mm.h} × ${selectedFormat.sensor_area_mm.v} mm (${selectedFormat.sensor_area_inch.h}" × ${selectedFormat.sensor_area_inch.v}")</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Image Circle</div>
+                        <div class="info-value">${selectedFormat.image_circle_mm} mm (${selectedFormat.image_circle_inch}")</div>
+                    </div>
+                `;
+            }
+
+            // Add XML information
+            infoHtml += `
                 <div class="info-item">
-                    <div class="info-label">Camera Model</div>
+                    <div class="info-label">XML Camera Model</div>
                     <div class="info-value">${camera.type}</div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Recording Format</div>
+                    <div class="info-label">XML Recording Format</div>
                     <div class="info-value">${recordingFormat}</div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Recording Aspect</div>
-                    <div class="info-value">${camera.aspect.toFixed(2)} (${camera.hres}:${camera.vres})</div>
+                    <div class="info-label">XML Resolution</div>
+                    <div class="info-value">${camera.hres} × ${camera.vres} (${camera.aspect.toFixed(2)}:1)</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Resolution</div>
-                    <div class="info-value">${camera.hres} × ${camera.vres}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Sensor Active Area</div>
-                    <div class="info-value">${physicalWidth} × ${physicalHeight} mm</div>
-                </div>
+            `;
+
+            // Add sensor area if not already shown from selected format
+            if (!selectedFormat) {
+                infoHtml += `
+                    <div class="info-item">
+                        <div class="info-label">XML Sensor Active Area</div>
+                        <div class="info-value">${physicalWidth} × ${physicalHeight} mm</div>
+                    </div>
+                `;
+            }
+
+            // Add frameline statistics
+            const framelineNamesArray = framelineNames ? Object.values(framelineNames) : [];
+            if (framelineNamesArray.length > 0) {
+                infoHtml += `
+                    <div class="info-item">
+                        <div class="info-label">Frameline Formats</div>
+                        <div class="info-value">${framelineNamesArray.join(', ')}</div>
+                    </div>
+                `;
+            }
+
+            infoHtml += `
                 <div class="info-item">
                     <div class="info-label">Shading Rectangles</div>
-                    <div class="info-value">${rects.length} (${rects.filter(r => r.opacity === 1.0).length} corner blackouts)</div>
+                    <div class="info-value">${rects.length} total (${rects.filter(r => r.opacity === 1.0).length} blackouts, ${rects.filter(r => r.opacity > 0 && r.opacity < 1).length} dimming)</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Frame Lines</div>
-                    <div class="info-value">${lines.length}</div>
+                    <div class="info-value">${lines.length} total</div>
                 </div>
             `;
+
+            cameraInfoDiv.innerHTML = infoHtml;
+
+            // Update legend with frameline information
+            updateLegend(rects, framelineNames);
+        }
+
+        // Update legend with dynamic frameline information
+        function updateLegend(rects, framelineNames) {
+            const legendDiv = document.querySelector('.legend');
+            if (!legendDiv) return;
+
+            // Determine what types of elements we have
+            const hasDimming = rects.some(r => r.opacity > 0 && r.opacity < 1);
+            const hasBlackouts = rects.some(r => r.opacity === 1.0);
+
+            // Get unique frameline formats
+            const uniqueFormats = framelineNames ? Object.entries(framelineNames) : [];
+
+            let legendHtml = '<h3 style="margin-bottom: 10px; font-size: 16px;">Legend</h3>';
+
+            // Add dimming if present
+            if (hasDimming) {
+                legendHtml += `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(0,0,0,0.25);"></div>
+                        <div class="legend-label">25% Dimming (Shading overlay)</div>
+                    </div>
+                `;
+            }
+
+            // Add blackouts if present
+            if (hasBlackouts) {
+                legendHtml += `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(0,0,0,1);"></div>
+                        <div class="legend-label">100% Blackout (Corner squares)</div>
+                    </div>
+                `;
+            }
+
+            // Add frameline formats
+            if (uniqueFormats.length > 0) {
+                uniqueFormats.forEach(([formatKey, formatName]) => {
+                    legendHtml += `
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: transparent; border: 2px solid #00ff00;"></div>
+                            <div class="legend-label">Frame Lines: ${formatName}</div>
+                        </div>
+                    `;
+                });
+            } else {
+                legendHtml += `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: transparent; border: 2px solid #00ff00;"></div>
+                        <div class="legend-label">Frame Lines</div>
+                    </div>
+                `;
+            }
+
+            legendDiv.innerHTML = legendHtml;
         }
         
         fileInput.addEventListener('change', (event) => {
@@ -669,8 +1033,22 @@
         
         // Function to draw placeholder
         function drawPlaceholder() {
-            canvas.width = 1200;
-            canvas.height = 900;
+            // Use selected format aspect ratio if available
+            if (selectedFormat) {
+                const aspectRatio = getAspectRatio(selectedFormat);
+                const targetHeight = 800;
+                canvas.height = targetHeight;
+                canvas.width = targetHeight * aspectRatio;
+
+                if (canvas.width > 1200) {
+                    canvas.width = 1200;
+                    canvas.height = 1200 / aspectRatio;
+                }
+            } else {
+                canvas.width = 1200;
+                canvas.height = 900;
+            }
+
             ctx.fillStyle = '#808080'; // Neutral grey
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
@@ -697,6 +1075,9 @@
             ctx.fillText('Load an XML file to visualize framelines', canvas.width / 2, canvas.height / 2);
         }
         
+        // Load camera formats on page load
+        loadCameraFormats();
+
         // Set initial state - grey grid as default
         useGreyGrid = true;
         setActiveButton(useGreyGridBtn);

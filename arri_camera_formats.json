@@ -1,0 +1,1147 @@
+{
+  "document_info": {
+    "title": "ARRI Formats and Resolutions Overview",
+    "version": "v6.0",
+    "source": "2025-08-arri-formatsandresolutionsoverview-v6-0-data.pdf"
+  },
+  "cameras": [
+    {
+      "model": "ALEXA 35 Xtreme",
+      "variant": "Premium",
+      "sup_version": "SUP 5.0 or higher",
+      "formats": [
+        {
+          "name": "4.6K 3:2 Open Gate",
+          "sensor_photosites": { "h": 4608, "v": 3164 },
+          "recording_resolution": "4.6K",
+          "sensor_area_mm": { "h": 27.99, "v": 19.22 },
+          "sensor_area_inch": { "h": 1.102, "v": 0.757 },
+          "image_circle_mm": 33.96,
+          "image_circle_inch": 1.337,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 23.7, "max_fps": "-/35/80", "sensor_overdrive": "n/a" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 10.76, "max_fps": "-/80/120", "sensor_overdrive": "-/80/165" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60-120/60-120/120", "sensor_overdrive": "n/a" }
+          ]
+        },
+        {
+          "name": "4.6K 16:9",
+          "sensor_photosites": { "h": 4608, "v": 2592 },
+          "recording_resolution": "4.6K",
+          "sensor_area_mm": { "h": 27.99, "v": 15.75 },
+          "sensor_area_inch": { "h": 1.102, "v": 0.620 },
+          "image_circle_mm": 32.12,
+          "image_circle_inch": 1.265,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 19.4, "max_fps": "-/45/95", "sensor_overdrive": "n/a" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 8.84, "max_fps": "-/100/150", "sensor_overdrive": "-/100/200" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "70-150/70-150/150", "sensor_overdrive": "n/a" }
+          ]
+        },
+        {
+          "name": "4K 16:9",
+          "sensor_photosites": { "h": 4096, "v": 2304 },
+          "recording_resolution": "4K",
+          "sensor_area_mm": { "h": 24.88, "v": 14.00 },
+          "sensor_area_inch": { "h": 0.980, "v": 0.551 },
+          "image_circle_mm": 28.55,
+          "image_circle_inch": 1.124,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 15.4, "max_fps": "-/55/125", "sensor_overdrive": "n/a" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 7.23, "max_fps": "-/125/150", "sensor_overdrive": "-/125/210" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "90-150/90-150/150", "sensor_overdrive": "n/a" }
+          ]
+        },
+        {
+          "name": "3.8K 16:9",
+          "sensor_photosites": { "h": 3840, "v": 2160 },
+          "recording_resolution": "UHD",
+          "sensor_area_mm": { "h": 23.325, "v": 13.12 },
+          "sensor_area_inch": { "h": 0.918, "v": 0.517 },
+          "image_circle_mm": 26.76,
+          "image_circle_inch": 1.054,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 13.5, "max_fps": "-/65/140", "sensor_overdrive": "n/a" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 6.19, "max_fps": "-/145/150", "sensor_overdrive": "-/145/240" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "105-150/105-150/150", "sensor_overdrive": "n/a" }
+          ]
+        },
+        {
+          "name": "3.8K 2.39:1",
+          "sensor_photosites": { "h": 3840, "v": 1608 },
+          "recording_resolution": "UHD",
+          "sensor_area_mm": { "h": 23.325, "v": 9.77 },
+          "sensor_area_inch": { "h": 0.918, "v": 0.385 },
+          "image_circle_mm": 25.29,
+          "image_circle_inch": 0.996,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 10.21, "max_fps": "-/85/190", "sensor_overdrive": "n/a" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 4.65, "max_fps": "-/195/240", "sensor_overdrive": "-/195/240" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "140-240/140-240/240", "sensor_overdrive": "n/a" }
+          ]
+        },
+        {
+          "name": "3.3K 6:5",
+          "sensor_photosites": { "h": 3328, "v": 2790 },
+          "recording_resolution": "3.3K",
+          "sensor_area_mm": { "h": 20.22, "v": 16.95 },
+          "sensor_area_inch": { "h": 0.796, "v": 0.667 },
+          "image_circle_mm": 26.38,
+          "image_circle_inch": 1.039,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 15.1, "max_fps": "-/55/120", "sensor_overdrive": "n/a" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 7.17, "max_fps": "-/120/120", "sensor_overdrive": "-/125/210" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "90-120/90-120/120", "sensor_overdrive": "n/a" }
+          ]
+        },
+        {
+          "name": "2K 16:9 S16",
+          "sensor_photosites": { "h": 2048, "v": 1152 },
+          "recording_resolution": "2K",
+          "sensor_area_mm": { "h": 12.44, "v": 7.00 },
+          "sensor_area_inch": { "h": 0.490, "v": 0.275 },
+          "image_circle_mm": 14.27,
+          "image_circle_inch": 0.562,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 4.01, "max_fps": "-/230/330", "sensor_overdrive": "n/a" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 1.94, "max_fps": "-/330/330", "sensor_overdrive": "-/505/660" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "330/330/330", "sensor_overdrive": "n/a" }
+          ]
+        },
+        {
+          "name": "HD 16:9 S16",
+          "sensor_photosites": { "h": 1920, "v": 1080 },
+          "recording_resolution": "HD",
+          "sensor_area_mm": { "h": 11.66, "v": 6.56 },
+          "sensor_area_inch": { "h": 0.459, "v": 0.258 },
+          "image_circle_mm": 13.38,
+          "image_circle_inch": 0.527,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 3.55, "max_fps": "-/260/330", "sensor_overdrive": "n/a" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 1.68, "max_fps": "-/330/330", "sensor_overdrive": "-/590/660" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "330/330/330", "sensor_overdrive": "n/a" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA 35 Xtreme",
+      "variant": "Base",
+      "sup_version": "SUP 5.0 or higher",
+      "formats": [
+        {
+          "name": "4K 16:9",
+          "sensor_photosites": { "h": 4096, "v": 2304 },
+          "recording_resolution": "4K",
+          "sensor_area_mm": { "h": 24.88, "v": 14.00 },
+          "sensor_area_inch": { "h": 0.980, "v": 0.551 },
+          "image_circle_mm": 28.55,
+          "image_circle_inch": 1.124,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 15.4, "max_fps": "-/55/60" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 7.23, "max_fps": "-/60/60" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60/60/60" }
+          ]
+        },
+        {
+          "name": "3.8K 16:9",
+          "sensor_photosites": { "h": 3840, "v": 2160 },
+          "recording_resolution": "UHD",
+          "sensor_area_mm": { "h": 23.325, "v": 13.12 },
+          "sensor_area_inch": { "h": 0.918, "v": 0.517 },
+          "image_circle_mm": 26.76,
+          "image_circle_inch": 1.054,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 13.5, "max_fps": "-/60/60" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 6.19, "max_fps": "-/60/60" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60/60/60" }
+          ]
+        },
+        {
+          "name": "3.8K 2.39:1",
+          "sensor_photosites": { "h": 3840, "v": 1608 },
+          "recording_resolution": "UHD",
+          "sensor_area_mm": { "h": 23.325, "v": 9.77 },
+          "sensor_area_inch": { "h": 0.918, "v": 0.385 },
+          "image_circle_mm": 25.29,
+          "image_circle_inch": 0.996,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 10.21, "max_fps": "-/60/60" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 4.65, "max_fps": "-/60/60" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60/60/60" }
+          ]
+        },
+        {
+          "name": "2K 16:9 S16",
+          "sensor_photosites": { "h": 2048, "v": 1152 },
+          "recording_resolution": "2K",
+          "sensor_area_mm": { "h": 12.44, "v": 7.00 },
+          "sensor_area_inch": { "h": 0.490, "v": 0.275 },
+          "image_circle_mm": 14.27,
+          "image_circle_inch": 0.562,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 4.01, "max_fps": "-/60/60" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 1.94, "max_fps": "-/60/60" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60/60/60" }
+          ]
+        },
+        {
+          "name": "HD 16:9 S16",
+          "sensor_photosites": { "h": 1920, "v": 1080 },
+          "recording_resolution": "HD",
+          "sensor_area_mm": { "h": 11.66, "v": 6.56 },
+          "sensor_area_inch": { "h": 0.459, "v": 0.258 },
+          "image_circle_mm": 13.38,
+          "image_circle_inch": 0.527,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 3.55, "max_fps": "-/60/60" },
+            { "codec": "MXF/ARRICORE", "frame_size_mb": 1.68, "max_fps": "-/60/60" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60/60/60" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA 35",
+      "variant": "Premium",
+      "sup_version": "SUP 1.3/SUP 4.0 or higher",
+      "formats": [
+        {
+          "name": "4.6K 3:2 Open Gate",
+          "sensor_photosites": { "h": 4608, "v": 3164 },
+          "recording_resolution": "4.6K",
+          "sensor_area_mm": { "h": 27.99, "v": 19.22 },
+          "sensor_area_inch": { "h": 1.102, "v": 0.757 },
+          "image_circle_mm": 33.96,
+          "image_circle_inch": 1.337,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 23.7, "max_fps": "-/35/75" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60/60/60" }
+          ]
+        },
+        {
+          "name": "4.6K 16:9",
+          "sensor_photosites": { "h": 4608, "v": 2592 },
+          "recording_resolution": "4.6K",
+          "sensor_area_mm": { "h": 27.99, "v": 15.75 },
+          "sensor_area_inch": { "h": 1.102, "v": 0.620 },
+          "image_circle_mm": 32.12,
+          "image_circle_inch": 1.265,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 19.4, "max_fps": "-/45/75" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "75/75/75", "note": "4K output: 4096x2304" }
+          ]
+        },
+        {
+          "name": "4K 16:9",
+          "sensor_photosites": { "h": 4096, "v": 2304 },
+          "recording_resolution": "4K",
+          "sensor_area_mm": { "h": 24.88, "v": 14.00 },
+          "sensor_area_inch": { "h": 0.980, "v": 0.551 },
+          "image_circle_mm": 28.55,
+          "image_circle_inch": 1.124,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 15.4, "max_fps": "-/55/120" },
+            {
+              "codec": "MXF/ProRes",
+              "frame_size_mb": null,
+              "outputs": [
+                { "resolution": "4K", "max_fps": "90-100/90-100/100" },
+                { "resolution": "UHD", "max_fps": "105-120/105-120/120" },
+                { "resolution": "2K", "max_fps": "120/120/120" },
+                { "resolution": "HD", "max_fps": "120/120/120" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "4K 2:1",
+          "sensor_photosites": { "h": 4096, "v": 2048 },
+          "recording_resolution": "4K",
+          "sensor_area_mm": { "h": 24.88, "v": 10.42 },
+          "sensor_area_inch": { "h": 0.980, "v": 0.410 },
+          "image_circle_mm": 26.98,
+          "image_circle_inch": 1.062,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 13.7, "max_fps": "-/65/120" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "100-120/100-120/120" }
+          ]
+        },
+        {
+          "name": "3.8K 16:9",
+          "sensor_photosites": { "h": 3840, "v": 2160 },
+          "recording_resolution": "UHD",
+          "sensor_area_mm": { "h": 23.325, "v": 13.12 },
+          "sensor_area_inch": { "h": 0.918, "v": 0.517 },
+          "image_circle_mm": 26.76,
+          "image_circle_inch": 1.054,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 13.5, "max_fps": "-/65/120" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "105-120/105-120/120" }
+          ]
+        },
+        {
+          "name": "3.3K 6:5",
+          "sensor_photosites": { "h": 3328, "v": 2790 },
+          "recording_resolution": "3.3K",
+          "sensor_area_mm": { "h": 20.22, "v": 16.95 },
+          "sensor_area_inch": { "h": 0.796, "v": 0.667 },
+          "image_circle_mm": 26.38,
+          "image_circle_inch": 1.039,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 15.1, "max_fps": "-/55/100" },
+            {
+              "codec": "MXF/ProRes",
+              "frame_size_mb": null,
+              "outputs": [
+                { "resolution": "4K 2.39:1 Ana 2x", "max_fps": "75/75/75" },
+                { "resolution": "3.3K", "max_fps": "75/75/75" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "3K 1:1",
+          "sensor_photosites": { "h": 3072, "v": 3072 },
+          "recording_resolution": "3K 1:1 - 3K",
+          "sensor_area_mm": { "h": 18.66, "v": 18.66 },
+          "sensor_area_inch": { "h": 0.735, "v": 0.735 },
+          "image_circle_mm": 26.39,
+          "image_circle_inch": 1.039,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 15.4, "max_fps": "-/55/100" },
+            {
+              "codec": "MXF/ProRes",
+              "frame_size_mb": null,
+              "outputs": [
+                { "resolution": "3K 1:1 - 3K", "max_fps": "90/90/90" },
+                { "resolution": "3.8K 2:1 Ana 2x", "max_fps": "100/100/100" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "2.7K 8:9",
+          "sensor_photosites": { "h": 2743, "v": 3086 },
+          "recording_resolution": "UHD 16:9 Ana 2x",
+          "sensor_area_mm": { "h": 16.66, "v": 18.75 },
+          "sensor_area_inch": { "h": 0.656, "v": 0.738 },
+          "image_circle_mm": 25.08,
+          "image_circle_inch": 0.987,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "100/100/100" }
+          ]
+        },
+        {
+          "name": "2K 16:9 S16",
+          "sensor_photosites": { "h": 2048, "v": 1152 },
+          "recording_resolution": "2K",
+          "sensor_area_mm": { "h": 12.44, "v": 7.00 },
+          "sensor_area_inch": { "h": 0.490, "v": 0.275 },
+          "image_circle_mm": 14.27,
+          "image_circle_inch": 0.562,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "120" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA 35",
+      "variant": "Base",
+      "sup_version": "SUP 4.0 or higher",
+      "formats": [
+        {
+          "name": "4K 16:9",
+          "sensor_photosites": { "h": 4096, "v": 2304 },
+          "recording_resolution": "4K",
+          "sensor_area_mm": { "h": 24.88, "v": 14.00 },
+          "sensor_area_inch": { "h": 0.980, "v": 0.551 },
+          "image_circle_mm": 28.55,
+          "image_circle_inch": 1.124,
+          "codecs": [
+            {
+              "codec": "MXF/ProRes",
+              "frame_size_mb": null,
+              "outputs": [
+                { "resolution": "4K", "max_fps": "90-100/90-100/100" },
+                { "resolution": "UHD", "max_fps": "105-120/105-120/120" },
+                { "resolution": "2K", "max_fps": "120/120/120" },
+                { "resolution": "HD", "max_fps": "120/120/120" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "4K 2:1",
+          "sensor_photosites": { "h": 4096, "v": 1716 },
+          "recording_resolution": "4K",
+          "sensor_area_mm": { "h": 24.88, "v": 10.42 },
+          "sensor_area_inch": { "h": 0.980, "v": 0.410 },
+          "image_circle_mm": 26.98,
+          "image_circle_inch": 1.062,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "120/120/120" }
+          ]
+        },
+        {
+          "name": "3.8K 16:9",
+          "sensor_photosites": { "h": 3840, "v": 2160 },
+          "recording_resolution": "UHD",
+          "sensor_area_mm": { "h": 23.325, "v": 13.12 },
+          "sensor_area_inch": { "h": 0.918, "v": 0.517 },
+          "image_circle_mm": 26.76,
+          "image_circle_inch": 1.054,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "105-120/120" }
+          ]
+        },
+        {
+          "name": "2K 16:9 S16",
+          "sensor_photosites": { "h": 2048, "v": 1152 },
+          "recording_resolution": "2K",
+          "sensor_area_mm": { "h": 12.44, "v": 7.00 },
+          "sensor_area_inch": { "h": 0.490, "v": 0.275 },
+          "image_circle_mm": 14.27,
+          "image_circle_inch": 0.562,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "120/120/120" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA 265",
+      "variant": null,
+      "sup_version": "SUP 3.0",
+      "formats": [
+        {
+          "name": "Open Gate",
+          "sensor_photosites": { "h": 6560, "v": 3100 },
+          "recording_resolution": "Open Gate",
+          "sensor_area_mm": { "h": 54.12, "v": 25.58 },
+          "sensor_area_inch": { "h": 2.131, "v": 1.007 },
+          "image_circle_mm": 59.86,
+          "image_circle_inch": 2.357,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 30.5, "max_fps": "29/60" }
+          ]
+        },
+        {
+          "name": "5.1K",
+          "sensor_photosites": { "h": 5120, "v": 3100 },
+          "recording_resolution": "5.1K",
+          "sensor_area_mm": { "h": 42.24, "v": 25.58 },
+          "sensor_area_inch": { "h": 1.663, "v": 1.007 },
+          "image_circle_mm": 49.38,
+          "image_circle_inch": 1.908,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 23.8, "max_fps": "37/60" }
+          ]
+        },
+        {
+          "name": "4.5K",
+          "sensor_photosites": { "h": 4448, "v": 3096 },
+          "recording_resolution": "4.5K",
+          "sensor_area_mm": { "h": 36.70, "v": 25.54 },
+          "sensor_area_inch": { "h": 1.44, "v": 1.01 },
+          "image_circle_mm": 44.71,
+          "image_circle_inch": 1.76,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 20.9, "max_fps": "43/60" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA 35 HVNF",
+      "variant": null,
+      "sup_version": "SUP 2.0 or higher",
+      "formats": [
+        {
+          "name": "4K 16:9",
+          "sensor_photosites": { "h": 4096, "v": 2304 },
+          "recording_resolution": "4K",
+          "sensor_area_mm": { "h": 24.88, "v": 14.00 },
+          "sensor_area_inch": { "h": 0.980, "v": 0.551 },
+          "image_circle_mm": 28.55,
+          "image_circle_inch": 1.124,
+          "codecs": [
+            {
+              "codec": "MXF/ProRes",
+              "frame_size_mb": null,
+              "outputs": [
+                { "resolution": "4K", "max_fps": "90-100/90-100/100" },
+                { "resolution": "UHD", "max_fps": "105-120/105-120/120" },
+                { "resolution": "2K", "max_fps": "120/120/120" },
+                { "resolution": "HD", "max_fps": "120/120/120" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "4K 2:1",
+          "sensor_photosites": { "h": 4096, "v": 1716 },
+          "recording_resolution": "4K",
+          "sensor_area_mm": { "h": 24.88, "v": 10.42 },
+          "sensor_area_inch": { "h": 0.980, "v": 0.410 },
+          "image_circle_mm": 26.98,
+          "image_circle_inch": 1.062,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "120/120/120" }
+          ]
+        },
+        {
+          "name": "3.8K 16:9",
+          "sensor_photosites": { "h": 3840, "v": 2160 },
+          "recording_resolution": "UHD",
+          "sensor_area_mm": { "h": 23.325, "v": 13.12 },
+          "sensor_area_inch": { "h": 0.918, "v": 0.517 },
+          "image_circle_mm": 26.76,
+          "image_circle_inch": 1.054,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "105-120/105-120/120" }
+          ]
+        },
+        {
+          "name": "2K 16:9 S16",
+          "sensor_photosites": { "h": 2048, "v": 1152 },
+          "recording_resolution": "2K",
+          "sensor_area_mm": { "h": 12.44, "v": 7.00 },
+          "sensor_area_inch": { "h": 0.490, "v": 0.275 },
+          "image_circle_mm": 14.27,
+          "image_circle_inch": 0.562,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "120/120/120" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA Mini LF",
+      "variant": null,
+      "sup_version": "SUP 7.1 and higher",
+      "formats": [
+        {
+          "name": "LF 4.3K & Open Gate - 4.5K LF 3:2 Open Gate",
+          "sensor_photosites": { "h": 4448, "v": 3096 },
+          "recording_resolution": "4.5K",
+          "sensor_area_mm": { "h": 36.70, "v": 25.54 },
+          "sensor_area_inch": { "h": 1.445, "v": 1.006 },
+          "image_circle_mm": 44.71,
+          "image_circle_inch": 1.760,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 20.9, "frame_size_bytes": 20876584, "max_fps": "40" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "40" }
+          ]
+        },
+        {
+          "name": "LF 4.3K & Open Gate - 4.3K LF 16:9",
+          "sensor_photosites": { "h": 4320, "v": 2430 },
+          "outputs": [
+            {
+              "output_format": "UHD",
+              "sensor_area_mm": { "h": 35.64, "v": 20.05 },
+              "sensor_area_inch": { "h": 1.364, "v": 0.789 },
+              "image_circle_mm": 40.89,
+              "image_circle_inch": 1.576,
+              "codecs": [
+                { "codec": "MXF/ProRes", "max_fps": "48" }
+              ]
+            },
+            {
+              "output_format": "HD",
+              "sensor_area_mm": { "h": 35.64, "v": 20.05 },
+              "sensor_area_inch": { "h": 1.364, "v": 0.789 },
+              "image_circle_mm": 40.89,
+              "image_circle_inch": 1.576,
+              "codecs": [
+                { "codec": "MXF/ProRes", "max_fps": "75" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "LF 2.39:1 - 4.5K LF 2.39:1",
+          "sensor_photosites": { "h": 4448, "v": 1856 },
+          "recording_resolution": "4.5K",
+          "sensor_area_mm": { "h": 36.70, "v": 15.31 },
+          "sensor_area_inch": { "h": 1.445, "v": 0.603 },
+          "image_circle_mm": 39.76,
+          "image_circle_inch": 1.565,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 12.6, "frame_size_bytes": 12603304, "max_fps": "60" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "LF 16:9 - 3.8K LF 16:9",
+          "sensor_photosites": { "h": 3840, "v": 2160 },
+          "recording_resolution": "UHD",
+          "sensor_area_mm": { "h": 31.68, "v": 17.82 },
+          "sensor_area_inch": { "h": 1.247, "v": 0.702 },
+          "image_circle_mm": 36.35,
+          "image_circle_inch": 1.431,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 12.7, "frame_size_bytes": 12661672, "max_fps": "60" },
+            {
+              "codec": "MXF/ProRes",
+              "frame_size_mb": null,
+              "outputs": [
+                { "resolution": "UHD", "max_fps": "60" },
+                { "resolution": "2K", "max_fps": "90" },
+                { "resolution": "HD", "max_fps": "90" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "LF 1:1 - 2.8K LF 1:1",
+          "sensor_photosites": { "h": 2880, "v": 2880 },
+          "recording_resolution": "2.8K",
+          "sensor_area_mm": { "h": 23.76, "v": 23.76 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.935 },
+          "image_circle_mm": 33.60,
+          "image_circle_inch": 1.322,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 12.4, "frame_size_bytes": 12445696, "max_fps": "60" },
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "S35 16:9, 4:3 & 3:2 - 3.4K S35 3:2",
+          "sensor_photosites": { "h": 3424, "v": 2202 },
+          "recording_resolution": "3.4K",
+          "sensor_area_mm": { "h": 28.25, "v": 18.17 },
+          "sensor_area_inch": { "h": 1.112, "v": 0.715 },
+          "image_circle_mm": 33.59,
+          "image_circle_inch": 1.322,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 11.5, "frame_size_bytes": 11529544, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "S35 16:9, 4:3 & 3:2 - 3.2K S35 16:9",
+          "sensor_photosites": { "h": 3200, "v": 1800 },
+          "recording_resolution": "3.2K",
+          "sensor_area_mm": { "h": 26.40, "v": 14.85 },
+          "sensor_area_inch": { "h": 1.039, "v": 0.585 },
+          "image_circle_mm": 30.29,
+          "image_circle_inch": 1.193,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "S35 16:9, 4:3 & 3:2 - 2.8K S35 4:3",
+          "sensor_photosites": { "h": 2880, "v": 2160 },
+          "recording_resolution": "2.8K",
+          "sensor_area_mm": { "h": 23.76, "v": 17.82 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.702 },
+          "image_circle_mm": 29.70,
+          "image_circle_inch": 1.169,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "75" }
+          ]
+        },
+        {
+          "name": "S35 16:9, 4:3 & 3:2 - 2.8K S35 16:9",
+          "sensor_photosites": { "h": 2880, "v": 1620 },
+          "recording_resolution": "HD",
+          "sensor_area_mm": { "h": 23.76, "v": 13.37 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.526 },
+          "image_circle_mm": 27.26,
+          "image_circle_inch": 1.073,
+          "codecs": [
+            { "codec": "MXF/ProRes", "frame_size_mb": null, "max_fps": "100" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "AMIRA & ALEXA Mini",
+      "variant": null,
+      "sup_version": "SUP 6.1",
+      "formats": [
+        {
+          "name": "Open Gate 3.4K",
+          "sensor_photosites": { "h": 3424, "v": 2202 },
+          "recording_resolution": "Open Gate",
+          "sensor_area_mm": { "h": 28.25, "v": 18.17 },
+          "sensor_area_inch": { "h": 1.112, "v": 0.715 },
+          "image_circle_mm": 33.59,
+          "image_circle_inch": 1.322,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 11.5, "frame_size_bytes": 11529544, "max_fps": "30" }
+          ]
+        },
+        {
+          "name": "4K UHD",
+          "sensor_photosites": { "h": 3200, "v": 1800 },
+          "outputs": [
+            {
+              "output_format": "4K UHD (3840x2160)",
+              "codecs": [
+                { "codec": "MOV/ProRes", "max_fps": "60" }
+              ]
+            },
+            {
+              "output_format": "3.2K",
+              "codecs": [
+                { "codec": "MOV/ProRes", "max_fps": "60" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "4:3 2.8K (OG 3.4K)",
+          "sensor_photosites": { "h": 3424, "v": 2202 },
+          "recording_resolution": "2880x2160",
+          "sensor_area_mm": { "h": 23.76, "v": 17.82 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.702 },
+          "image_circle_mm": 29.70,
+          "image_circle_inch": 1.169,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 11.5, "frame_size_bytes": 11529544, "max_fps": "30" }
+          ]
+        },
+        {
+          "name": "2.8K",
+          "sensor_photosites": { "h": 2880, "v": 1620 },
+          "recording_resolution": "2.8K",
+          "sensor_area_mm": { "h": 23.76, "v": 13.37 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.526 },
+          "image_circle_mm": 27.26,
+          "image_circle_inch": 1.073,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 7.2, "frame_size_bytes": 7218472, "max_fps": "48" }
+          ]
+        },
+        {
+          "name": "2.39:1 2K Ana. (OG 3.4K)",
+          "sensor_photosites": { "h": 3424, "v": 2202 },
+          "recording_resolution": "2560x2145",
+          "sensor_area_mm": { "h": 21.12, "v": 17.70 },
+          "sensor_area_inch": { "h": 0.831, "v": 0.697 },
+          "image_circle_mm": 27.55,
+          "image_circle_inch": 1.085,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 11.5, "frame_size_bytes": 11529544, "max_fps": "30" },
+            { "codec": "MOV/ProRes", "outputs": [{ "resolution": "2048x858", "max_fps": "120" }] }
+          ]
+        },
+        {
+          "name": "2K",
+          "sensor_photosites": { "h": 2868, "v": 1612 },
+          "recording_resolution": "2048x1152",
+          "sensor_area_mm": { "h": 23.66, "v": 13.30 },
+          "sensor_area_inch": { "h": 0.932, "v": 0.524 },
+          "image_circle_mm": 27.14,
+          "image_circle_inch": 1.069,
+          "codecs": [
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "200" }
+          ]
+        },
+        {
+          "name": "16:9 HD Ana. (OG 3.4K)",
+          "sensor_photosites": { "h": 3424, "v": 2202 },
+          "recording_resolution": "1920x2160",
+          "sensor_area_mm": { "h": 15.84, "v": 17.82 },
+          "sensor_area_inch": { "h": 0.624, "v": 0.702 },
+          "image_circle_mm": 23.84,
+          "image_circle_inch": 0.939,
+          "codecs": [
+            { "codec": "MXF/ARRIRAW", "frame_size_mb": 11.5, "frame_size_bytes": 11529544, "max_fps": "30" },
+            { "codec": "MOV/ProRes", "outputs": [{ "resolution": "1920x1080", "max_fps": "120" }] }
+          ]
+        },
+        {
+          "name": "HD",
+          "sensor_photosites": { "h": 2880, "v": 1620 },
+          "recording_resolution": "1920x1080",
+          "sensor_area_mm": { "h": 23.76, "v": 13.37 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.526 },
+          "image_circle_mm": 27.26,
+          "image_circle_inch": 1.073,
+          "codecs": [
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "200" },
+            { "codec": "MXF/MPEG-2", "frame_size_mb": null, "max_fps": "59.94" }
+          ]
+        },
+        {
+          "name": "S16 HD",
+          "sensor_photosites": { "h": 1600, "v": 900 },
+          "recording_resolution": "1920x1080",
+          "sensor_area_mm": { "h": 13.2, "v": 7.425 },
+          "sensor_area_inch": { "h": 0.520, "v": 0.292 },
+          "image_circle_mm": 15.14,
+          "image_circle_inch": 0.596,
+          "codecs": [
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "200" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA 65",
+      "variant": null,
+      "sup_version": "SUP 4.0",
+      "formats": [
+        {
+          "name": "Open Gate",
+          "sensor_photosites": { "h": 6560, "v": 3100 },
+          "recording_resolution": "Open Gate",
+          "sensor_area_mm": { "h": 54.12, "v": 25.58 },
+          "sensor_area_inch": { "h": 2.131, "v": 1.007 },
+          "image_circle_mm": 59.86,
+          "image_circle_inch": 2.357,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 30.5, "frame_size_bytes": 30724072, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "5.1K",
+          "sensor_photosites": { "h": 5120, "v": 2880 },
+          "recording_resolution": "5.1K",
+          "sensor_area_mm": { "h": 42.24, "v": 23.76 },
+          "sensor_area_inch": { "h": 1.663, "v": 0.935 },
+          "image_circle_mm": 49.46,
+          "image_circle_inch": 1.908,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 22.1, "frame_size_bytes": 22338472, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "LF Open Gate",
+          "sensor_photosites": { "h": 4448, "v": 3096 },
+          "recording_resolution": "LF Open Gate",
+          "sensor_area_mm": { "h": 36.70, "v": 25.54 },
+          "sensor_area_inch": { "h": 1.44, "v": 1.01 },
+          "image_circle_mm": 44.71,
+          "image_circle_inch": 1.76,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 20.9, "frame_size_bytes": 20876584, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "4.3K",
+          "sensor_photosites": { "h": 4320, "v": 2880 },
+          "recording_resolution": "4.3K",
+          "sensor_area_mm": { "h": 35.64, "v": 23.76 },
+          "sensor_area_inch": { "h": 1.403, "v": 0.935 },
+          "image_circle_mm": 42.83,
+          "image_circle_inch": 1.686,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 18.7, "frame_size_bytes": 18882472, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "4K UHD",
+          "sensor_photosites": { "h": 3840, "v": 2160 },
+          "recording_resolution": "4K UHD",
+          "sensor_area_mm": { "h": 31.68, "v": 17.82 },
+          "sensor_area_inch": { "h": 1.247, "v": 0.702 },
+          "image_circle_mm": 36.35,
+          "image_circle_inch": 1.431,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 12.7, "frame_size_bytes": 12661672, "max_fps": "60" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA XT",
+      "variant": null,
+      "sup_version": "SUP 11.1",
+      "formats": [
+        {
+          "name": "Open Gate mode - OpenGate",
+          "sensor_photosites": { "h": 3424, "v": 2202 },
+          "recording_resolution": "OpenGate",
+          "recording_file_content": { "h": 3414, "v": 2198 },
+          "sensor_area_mm": { "h": 28.25, "v": 18.17 },
+          "sensor_area_inch": { "h": 1.112, "v": 0.715 },
+          "image_circle_mm": 33.59,
+          "image_circle_inch": 1.322,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 11.3, "frame_size_bytes": 11319712, "max_fps": "75" }
+          ]
+        },
+        {
+          "name": "4:3 mode - Full",
+          "sensor_photosites": { "h": 2880, "v": 2160 },
+          "recording_resolution": "Full",
+          "sensor_area_mm": { "h": 23.76, "v": 17.82 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.702 },
+          "image_circle_mm": 29.70,
+          "image_circle_inch": 1.169,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 9.3, "frame_size_bytes": 9341440, "max_fps": "90" }
+          ]
+        },
+        {
+          "name": "4:3 mode - Cropped",
+          "sensor_photosites": { "h": 2592, "v": 2160 },
+          "recording_resolution": "Cropped",
+          "recording_file_content": { "h": 2578, "v": 2160 },
+          "sensor_area_mm": { "h": 21.27, "v": 17.82 },
+          "sensor_area_inch": { "h": 0.837, "v": 0.702 },
+          "image_circle_mm": 27.75,
+          "image_circle_inch": 1.092,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 8.4, "frame_size_bytes": 8402176, "max_fps": "96" }
+          ]
+        },
+        {
+          "name": "4:3 mode - 2K (2048x1536)",
+          "sensor_photosites": { "h": 2868, "v": 2152 },
+          "recording_resolution": "2K",
+          "recording_file": { "h": 2048, "v": 1536 },
+          "sensor_area_mm": { "h": 23.66, "v": 17.75 },
+          "sensor_area_inch": { "h": 0.932, "v": 0.699 },
+          "image_circle_mm": 29.58,
+          "image_circle_inch": 1.165,
+          "codecs": [
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "48" }
+          ]
+        },
+        {
+          "name": "16:9 mode - 2.8K",
+          "sensor_photosites": { "h": 2880, "v": 1620 },
+          "recording_resolution": "2.8K",
+          "sensor_area_mm": { "h": 23.76, "v": 13.37 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.526 },
+          "image_circle_mm": 27.26,
+          "image_circle_inch": 1.073,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 7.0, "frame_size_bytes": 7008640, "max_fps": "120" }
+          ]
+        },
+        {
+          "name": "16:9 mode - 3.2K (3164x1778)",
+          "sensor_photosites": { "h": 3168, "v": 1782 },
+          "recording_resolution": "3.2K",
+          "recording_file": { "h": 3200, "v": 1782 },
+          "recording_file_content": { "h": 3164, "v": 1778 },
+          "sensor_area_mm": { "h": 26.14, "v": 14.70 },
+          "sensor_area_inch": { "h": 1.029, "v": 0.579 },
+          "image_circle_mm": 29.99,
+          "image_circle_inch": 1.181,
+          "codecs": [
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "30" }
+          ]
+        },
+        {
+          "name": "16:9 mode - 2K (2048x1152)",
+          "sensor_photosites": { "h": 2868, "v": 1614 },
+          "recording_resolution": "2K",
+          "recording_file": { "h": 2048, "v": 1152 },
+          "sensor_area_mm": { "h": 23.66, "v": 13.32 },
+          "sensor_area_inch": { "h": 0.932, "v": 0.524 },
+          "image_circle_mm": 27.15,
+          "image_circle_inch": 1.069,
+          "codecs": [
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "16:9 mode - HD (1920x1080)",
+          "sensor_photosites": { "h": 2880, "v": 1620 },
+          "recording_resolution": "HD",
+          "recording_file": { "h": 1920, "v": 1080 },
+          "sensor_area_mm": { "h": 23.76, "v": 13.37 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.526 },
+          "image_circle_mm": 27.26,
+          "image_circle_inch": 1.073,
+          "codecs": [
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "120" },
+            { "codec": "MXF/DNxHD", "frame_size_mb": null, "max_fps": "120" }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA",
+      "variant": null,
+      "sup_version": "SUP 11.1",
+      "formats": [
+        {
+          "name": "4:3 mode",
+          "sensor_photosites": { "h": 2880, "v": 2160 },
+          "recording_resolution": "2.8K (external)",
+          "sensor_area_mm": { "h": 23.76, "v": 17.82 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.702 },
+          "image_circle_mm": 29.70,
+          "image_circle_inch": 1.169,
+          "codecs": [
+            { "codec": "ARRIRAW (external)", "frame_size_mb": 9.3, "frame_size_bytes": 9341440, "max_fps": "60" },
+            { "codec": "MOV/ProRes", "outputs": [{ "resolution": "2K (2048x1536)", "max_fps": "48" }] }
+          ]
+        },
+        {
+          "name": "16:9 mode",
+          "sensor_photosites": { "h": 2880, "v": 1620 },
+          "recording_resolution": "2.8K (external)",
+          "sensor_area_mm": { "h": 23.76, "v": 13.37 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.526 },
+          "image_circle_mm": 27.26,
+          "image_circle_inch": 1.073,
+          "codecs": [
+            { "codec": "ARRIRAW (external)", "frame_size_mb": 7.0, "frame_size_bytes": 7008640, "max_fps": "60" },
+            {
+              "codec": "MOV/ProRes",
+              "outputs": [
+                { "resolution": "2K (2048x1152)", "max_fps": "60" },
+                { "resolution": "HD (1920x1080)", "max_fps": "120" }
+              ]
+            },
+            { "codec": "MXF/DNxHD", "outputs": [{ "resolution": "HD (1920x1080)", "max_fps": "55" }] }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA SXT",
+      "variant": null,
+      "sup_version": "SUP 2.1",
+      "formats": [
+        {
+          "name": "Open Gate mode - 3.4K",
+          "sensor_photosites": { "h": 3424, "v": 2202 },
+          "recording_resolution": "3.4K",
+          "sensor_area_mm": { "h": 28.25, "v": 18.17 },
+          "sensor_area_inch": { "h": 1.112, "v": 0.715 },
+          "image_circle_mm": 33.59,
+          "image_circle_inch": 1.322,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 11.5, "frame_size_bytes": 11529544, "max_fps": "90" },
+            { "codec": "MOV/ProRes", "outputs": [
+              { "resolution": "3.4K", "max_fps": "60" },
+              { "resolution": "4K Cine", "max_fps": "48" }
+            ]}
+          ]
+        },
+        {
+          "name": "6:5 mode - 2.6K",
+          "sensor_photosites": { "h": 2592, "v": 2160 },
+          "recording_resolution": "2.6K",
+          "recording_file_content": { "h": 2578, "v": 2160 },
+          "sensor_area_mm": { "h": 21.38, "v": 17.82 },
+          "sensor_area_inch": { "h": 0.842, "v": 0.702 },
+          "image_circle_mm": 27.84,
+          "image_circle_inch": 1.096,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 8.6, "frame_size_bytes": 8618152, "max_fps": "96" },
+            { "codec": "MOV/ProRes", "outputs": [
+              { "resolution": "4K Cine Anamorphic", "max_fps": "60" },
+              { "resolution": "2K Anamorphic", "max_fps": "96" }
+            ]}
+          ]
+        },
+        {
+          "name": "4:3 mode - 2.8K",
+          "sensor_photosites": { "h": 2880, "v": 2160 },
+          "recording_resolution": "2.8K",
+          "sensor_area_mm": { "h": 23.76, "v": 17.82 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.702 },
+          "image_circle_mm": 29.70,
+          "image_circle_inch": 1.169,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 9.6, "frame_size_bytes": 9551272, "max_fps": "96" },
+            { "codec": "MOV/ProRes", "outputs": [{ "resolution": "2.8K", "max_fps": "60" }]}
+          ]
+        },
+        {
+          "name": "16:9 mode - 3.2K",
+          "sensor_photosites": { "h": 3168, "v": 1782 },
+          "recording_resolution": "3.2K",
+          "sensor_area_mm": { "h": 26.14, "v": 14.70 },
+          "sensor_area_inch": { "h": 1.029, "v": 0.579 },
+          "image_circle_mm": 29.99,
+          "image_circle_inch": 1.181,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 8.7, "frame_size_bytes": 8688136, "max_fps": "120" }
+          ]
+        },
+        {
+          "name": "16:9 mode - 2.8K",
+          "sensor_photosites": { "h": 2880, "v": 1620 },
+          "recording_resolution": "2.8K",
+          "sensor_area_mm": { "h": 23.76, "v": 13.37 },
+          "sensor_area_inch": { "h": 0.935, "v": 0.526 },
+          "image_circle_mm": 27.26,
+          "image_circle_inch": 1.073,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 7.2, "frame_size_bytes": 7218472, "max_fps": "120" }
+          ]
+        },
+        {
+          "name": "16:9 mode - ProRes outputs",
+          "sensor_photosites": { "h": 3200, "v": 1800 },
+          "codecs": [
+            { "codec": "MOV/ProRes", "outputs": [
+              { "resolution": "4K UHD", "max_fps": "50" },
+              { "resolution": "3.2K", "max_fps": "72" },
+              { "resolution": "2K", "max_fps": "120" },
+              { "resolution": "HD", "max_fps": "120" }
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "model": "ALEXA LF",
+      "variant": null,
+      "sup_version": "SUP 4.3",
+      "formats": [
+        {
+          "name": "LF Open Gate - OG 4.5K",
+          "sensor_photosites": { "h": 4448, "v": 3096 },
+          "recording_resolution": "OG 4.5K",
+          "sensor_area_mm": { "h": 36.70, "v": 25.54 },
+          "sensor_area_inch": { "h": 1.445, "v": 1.006 },
+          "image_circle_mm": 44.71,
+          "image_circle_inch": 1.760,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 20.9, "frame_size_bytes": 20876584, "max_fps": "90" },
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "60" }
+          ]
+        },
+        {
+          "name": "LF 2.39:1 - Scope 4.5K",
+          "sensor_photosites": { "h": 4448, "v": 1856 },
+          "recording_resolution": "Scope 4.5K",
+          "sensor_area_mm": { "h": 36.70, "v": 15.31 },
+          "sensor_area_inch": { "h": 1.445, "v": 0.603 },
+          "image_circle_mm": 39.76,
+          "image_circle_inch": 1.565,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 12.6, "frame_size_bytes": 12603304, "max_fps": "150" },
+            { "codec": "MOV/ProRes", "frame_size_mb": null, "max_fps": "100" }
+          ]
+        },
+        {
+          "name": "LF 16:9 - 4K UHD",
+          "sensor_photosites": { "h": 3840, "v": 2160 },
+          "recording_resolution": "4K UHD",
+          "sensor_area_mm": { "h": 31.68, "v": 17.82 },
+          "sensor_area_inch": { "h": 1.247, "v": 0.702 },
+          "image_circle_mm": 36.35,
+          "image_circle_inch": 1.431,
+          "codecs": [
+            { "codec": "ARRIRAW", "frame_size_mb": 12.7, "frame_size_bytes": 12661672, "max_fps": "90" },
+            {
+              "codec": "MOV/ProRes",
+              "frame_size_mb": null,
+              "outputs": [
+                { "resolution": "4K UHD", "max_fps": "60/40" },
+                { "resolution": "2K", "max_fps": "60" },
+                { "resolution": "HD", "max_fps": "60" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

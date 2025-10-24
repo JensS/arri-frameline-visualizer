@@ -1,67 +1,81 @@
 # ARRI Frameline Visualizer
 
-A web-based tool for visualizing ARRI Alexa Mini framelines and corner blackouts. Upload your camera's XML files to preview exactly how your framelines will appear in-camera. Perfect for cinematographers and DITs who need to verify framing guides before shooting.
+A web-based tool for visualizing ARRI camera framelines and corner blackouts across multiple ARRI camera models and formats. Upload your camera's XML files to preview exactly how your framelines will appear in-camera. Perfect for cinematographers and DITs who need to verify framing guides before shooting.
 
 The live demo is hosted here: [https://www.jenssage.com/arri-frameline-visualizer/](https://www.jenssage.com/arri-frameline-visualizer/)
 
+## Features
+
+- **Multi-Camera Support**: Works with ALEXA 35, ALEXA 35 Xtreme, ALEXA 265, ALEXA LF, ALEXA Mini LF, AMIRA, and more
+- **Format Selection**: Choose from all available sensor formats for your camera (Open Gate, 16:9, 4:3, 6:5, anamorphic, etc.)
+- **Aspect Ratio Validation**: Automatically validates uploaded images against the selected format
+- **Multiple Background Options**: Grey grid, sample images, or custom uploads
+- **XML Library**: Pre-loaded example frameline configurations
+- **Real-time Visualization**: See exactly how framelines will appear with proper aspect ratios
+
 ## How to Use
 
-### 1. Visualizer
-- Open `framelines-visualizer.html` in any web browser
-- **Load your XML**: Click "Choose File" under "Load Framelines XML File"
-- **Load a background image** (optional): Click "Choose File" under "Load Background Image"
-  - The visualizer will try to load an external image, but due to CORS restrictions this may not work
-  - Upload your own image file (JPG, PNG) to see exactly how the framelines look over your footage
+### 1. Select Your Camera and Format
+- **Select Camera Model**: Choose your ARRI camera from the dropdown (e.g., ALEXA 35, ALEXA Mini LF)
+- **Select Format**: Choose the recording format you'll be using (e.g., 4.6K 3:2 Open Gate, 4K 16:9, etc.)
+- The visualizer automatically adjusts the canvas aspect ratio to match your selected format
+- Camera format information is displayed in the info panel below
+
+### 2. Load Framelines XML
+- **Load your XML**: Click "Choose File" or "Select from Library"
+- Select from pre-loaded examples or upload your own XML file
 - The visualizer shows:
-  - **Black areas**: Your corner blackouts (100% opacity)
-  - **Gray areas**: Original shading (25% opacity)  
-  - **Green lines**: Frame lines (16:9 and vertical format guides)
-  - **Neutral grey background**: Shown when no image is loaded
+  - **Black areas**: Corner blackouts (100% opacity)
+  - **Gray areas**: Shading overlays (25% opacity)
+  - **Green lines**: Frame lines for different aspect ratios
+  - **Neutral grey background**: Default when no image is loaded
 
-### 2. Loading on Camera
-- Copy the `A-Mini_4x3-2_8K_1_0_modified.xml` file to your camera's media
-- Load it through the Alexa Mini's frame lines menu
-- The corner blackouts will appear in your viewfinder and SDI outputs
+### 3. Background Options
+- **Upload Custom Image**: Load your own reference image (JPG, PNG)
+  - The app validates that your image matches the selected format's aspect ratio
+  - Warnings appear if there's a mismatch (5% tolerance)
+- **Use Sample Image**: Load the included sample image (4:3 format)
+- **Use Grey Grid**: Display a reference grid for framing
 
-### 3. Customizing Corner Size
-To adjust the size of the corner blackouts, edit the XML file. Remember that the corners align with the **16:9 frame**, which spans from **0.125 to 0.875** vertically in the full 4:3 sensor.
-
-**Current settings (15% width, extending to mid-frame):**
-```xml
-<!-- Top corners -->
-<top>0.125</top>      <!-- Start at top of 16:9 frame -->
-<bottom>0.75</bottom>  <!-- Extend to 75% down = middle of 16:9 frame -->
-<left>0</left>         <!-- or <left>0.85</left> for right side -->
-<right>0.85</right>    <!-- 15% from edge -->
-```
-
-**Smaller corners (10% width, less vertical extent):**
-```xml
-<top>0.125</top>
-<bottom>0.70</bottom>  <!-- Less vertical coverage -->
-<left>0</left>
-<right>0.90</right>    <!-- 10% from edge -->
-```
-
-**Larger corners (20% width, more vertical extent):**
-```xml
-<top>0.125</top>
-<bottom>0.80</bottom>  <!-- More vertical coverage -->
-<left>0</left>
-<right>0.80</right>    <!-- 20% from edge -->
-```
-
-**Important**: The `<top>` value should always be `0.125` (16:9 frame top edge) and the bottom corners' `<bottom>` value should always be `0.125` (16:9 frame bottom edge) to align with your 16:9 extraction.
+### 4. Loading on Camera
+- Copy your XML file to a USB stick with a folder structure created with the camera itself
+- Load it through your ARRI camera's frame lines directory
+- The framelines will appear in your viewfinder and SDI outputs based on your preferences
 
 ## Technical Notes
 
-According to ARRI's specification sheet, the Alexa Mini in 4:3 2.8K mode has:
-- Sensor photosites: 2880 × 2160
-- Physical sensor size: 23.76mm × 17.82mm
-- Image circle: 29.70mm
-- Aspect ratio: 1.33 (4:3)
+### Camera Format Database
 
-The corner blackouts work because they use normalized coordinate values (0.0 to 1.0), which are resolution-independent. This means the same XML structure works regardless of the actual pixel dimensions.
+The visualizer includes comprehensive format data for the following cameras:
+- **ALEXA 35 Xtreme** (Premium & Base variants)
+- **ALEXA 35** (Premium & Base variants)
+- **ALEXA 35 HVNF**
+- **ALEXA 265**
+- **ALEXA Mini LF**
+- **AMIRA & ALEXA Mini**
+- **ALEXA 65**
+- **ALEXA XT**
+- **ALEXA**
+- **ALEXA SXT**
+- **ALEXA LF**
+
+Each format includes:
+- Sensor photosites (resolution)
+- Physical sensor dimensions in mm and inches
+- Image circle diameter
+- Recording resolution options
+- Supported codecs (ARRIRAW, ProRes, ARRICORE)
+
+### Aspect Ratio Validation
+
+The app validates uploaded images with a 5% tolerance. For example:
+- **4:3 format** (1.33:1): Accepts images between 1.26:1 and 1.40:1
+- **16:9 format** (1.78:1): Accepts images between 1.69:1 and 1.87:1
+- **2.39:1 format**: Accepts images between 2.27:1 and 2.51:1
+
+### Normalized Coordinates
+
+Framelines use normalized coordinate values (0.0 to 1.0), which are resolution-independent. This means the same XML structure works across different recording resolutions and formats, as long as the aspect ratio matches.
 
 ## Support
 
