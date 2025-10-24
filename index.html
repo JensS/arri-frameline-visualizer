@@ -190,6 +190,87 @@
             font-size: 13px;
             color: #ccc;
         }
+
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .popup-close:hover {
+            color: #fff;
+        }
+
+        .popup-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .xml-file-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .xml-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .xml-file-item:hover {
+            background: #3a3a3a;
+        }
+
+        .xml-file-name {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .xml-file-download {
+            font-size: 13px;
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .xml-file-download:hover {
+            color: #0088ff;
+        }
     </style>
 </head>
 <body>
@@ -202,7 +283,10 @@
         <div class="controls">
             <div class="control-group">
                 <label for="xmlFile">Load Framelines XML File:</label>
-                <input type="file" id="xmlFile" accept=".xml" />
+                <div style="display: flex; gap: 10px;">
+                    <input type="file" id="xmlFile" accept=".xml" style="flex: 1;" />
+                    <button id="selectFromLibrary" class="bg-option-btn">Select from Library</button>
+                </div>
             </div>
             <div class="control-group">
                 <label>Background Options:</label>
@@ -242,6 +326,16 @@
             </div>
         </div>
     </div>
+
+    <div id="xmlLibraryPopup" class="popup">
+        <div class="popup-content">
+            <span class="popup-close" id="closePopup">&times;</span>
+            <h3 class="popup-title">Select Frameline from Library</h3>
+            <ul class="xml-file-list" id="xmlFileList">
+                <!-- File items will be injected here by JavaScript -->
+            </ul>
+        </div>
+    </div>
     
     <footer style="text-align: center; margin-top: 30px; padding: 20px; color: #888; font-size: 14px;">
         You don't like it? Please fix it yourself :D Here's the github: <a href="https://github.com/JensS/arri-frameline-visualizer" style="color: #0066cc; text-decoration: none;">https://github.com/JensS/arri-frameline-visualizer</a>
@@ -257,6 +351,12 @@
         const useCustomImageBtn = document.getElementById('useCustomImage');
         const useSampleImageBtn = document.getElementById('useSampleImage');
         const useGreyGridBtn = document.getElementById('useGreyGrid');
+        const selectFromLibraryBtn = document.getElementById('selectFromLibrary');
+        const xmlLibraryPopup = document.getElementById('xmlLibraryPopup');
+        const closePopupBtn = document.getElementById('closePopup');
+        const xmlFileList = document.getElementById('xmlFileList');
+
+        const xmlFiles = ["A-Mini_4x3-2_8K_social-blackouts.xml", "A-Mini_4x3-2.8K_socials.xml"];
         
         let frameData = null;
         let backgroundImage = null;
@@ -601,6 +701,72 @@
         useGreyGrid = true;
         setActiveButton(useGreyGridBtn);
         drawPlaceholder();
+
+        function populateXmlFileList() {
+            xmlFileList.innerHTML = '';
+            xmlFiles.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('xml-file-item');
+                listItem.dataset.filename = file;
+
+                const fileNameSpan = document.createElement('span');
+                fileNameSpan.classList.add('xml-file-name');
+                fileNameSpan.textContent = file;
+
+                const downloadLink = document.createElement('a');
+                downloadLink.classList.add('xml-file-download');
+                downloadLink.textContent = 'Download';
+                downloadLink.href = `xmls/${file}`;
+                downloadLink.download = file;
+
+                listItem.appendChild(fileNameSpan);
+                listItem.appendChild(downloadLink);
+                xmlFileList.appendChild(listItem);
+            });
+        }
+
+        function loadXmlFromUrl(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(xmlText => {
+                    try {
+                        frameData = parseXML(xmlText);
+                        drawFramelines(frameData);
+                        xmlLibraryPopup.style.display = 'none';
+                    } catch (error) {
+                        showError(`Error loading XML: ${error.message}`);
+                        console.error(error);
+                    }
+                })
+                .catch(error => {
+                    showError(`Error fetching XML: ${error.message}`);
+                    console.error(error);
+                });
+        }
+
+        selectFromLibraryBtn.addEventListener('click', () => {
+            xmlLibraryPopup.style.display = 'flex';
+            populateXmlFileList();
+        });
+
+        closePopupBtn.addEventListener('click', () => {
+            xmlLibraryPopup.style.display = 'none';
+        });
+
+        xmlFileList.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('xml-file-download')) {
+                // Allow download link to work as normal
+                return;
+            }
+
+            const listItem = target.closest('.xml-file-item');
+            if (listItem) {
+                const filename = listItem.dataset.filename;
+                const fileUrl = `xmls/${filename}`;
+                loadXmlFromUrl(fileUrl);
+            }
+        });
     </script>
 </body>
 </html>
