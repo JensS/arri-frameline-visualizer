@@ -185,31 +185,6 @@
             margin-bottom: 20px;
             display: none;
         }
-        
-        .legend {
-            margin-top: 15px;
-            padding: 15px;
-            background: #1a1a1a;
-            border-radius: 4px;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .legend-color {
-            width: 30px;
-            height: 20px;
-            margin-right: 10px;
-            border: 1px solid #444;
-        }
-        
-        .legend-label {
-            font-size: 13px;
-            color: #ccc;
-        }
 
         .popup {
             position: fixed;
@@ -340,22 +315,6 @@
         <div class="info">
             <h3>Camera Information</h3>
             <div class="info-grid" id="cameraInfo"></div>
-            
-            <div class="legend">
-                <h3 style="margin-bottom: 10px; font-size: 16px;">Legend</h3>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(0,0,0,0.25);"></div>
-                    <div class="legend-label">25% Dimming (Original shading)</div>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(0,0,0,1);"></div>
-                    <div class="legend-label">100% Blackout (Corner squares)</div>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: transparent; border: 2px solid #00ff00;"></div>
-                    <div class="legend-label">Frame Lines</div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -826,8 +785,8 @@
             // Draw frame lines
             const lineScale = Math.min(canvas.width / camera.hres, canvas.height / camera.vres);
             lines.forEach(line => {
-                const color = line.color === 'user' ? '#00ff00' : '#ffffff';
-                ctx.strokeStyle = color;
+                // Use the actual color from the XML file
+                ctx.strokeStyle = line.color;
                 ctx.lineWidth = Math.max(line.width * lineScale, 1); // Ensure lines are at least 1px visible
                 
                 const x1 = line.left * canvas.width;
@@ -952,67 +911,8 @@
             `;
 
             cameraInfoDiv.innerHTML = infoHtml;
-
-            // Update legend with frameline information
-            updateLegend(rects, framelineNames);
         }
 
-        // Update legend with dynamic frameline information
-        function updateLegend(rects, framelineNames) {
-            const legendDiv = document.querySelector('.legend');
-            if (!legendDiv) return;
-
-            // Determine what types of elements we have
-            const hasDimming = rects.some(r => r.opacity > 0 && r.opacity < 1);
-            const hasBlackouts = rects.some(r => r.opacity === 1.0);
-
-            // Get unique frameline formats
-            const uniqueFormats = framelineNames ? Object.entries(framelineNames) : [];
-
-            let legendHtml = '<h3 style="margin-bottom: 10px; font-size: 16px;">Legend</h3>';
-
-            // Add dimming if present
-            if (hasDimming) {
-                legendHtml += `
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: rgba(0,0,0,0.25);"></div>
-                        <div class="legend-label">25% Dimming (Shading overlay)</div>
-                    </div>
-                `;
-            }
-
-            // Add blackouts if present
-            if (hasBlackouts) {
-                legendHtml += `
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: rgba(0,0,0,1);"></div>
-                        <div class="legend-label">100% Blackout (Corner squares)</div>
-                    </div>
-                `;
-            }
-
-            // Add frameline formats
-            if (uniqueFormats.length > 0) {
-                uniqueFormats.forEach(([formatKey, formatName]) => {
-                    legendHtml += `
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: transparent; border: 2px solid #00ff00;"></div>
-                            <div class="legend-label">Frame Lines: ${formatName}</div>
-                        </div>
-                    `;
-                });
-            } else {
-                legendHtml += `
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: transparent; border: 2px solid #00ff00;"></div>
-                        <div class="legend-label">Frame Lines</div>
-                    </div>
-                `;
-            }
-
-            legendDiv.innerHTML = legendHtml;
-        }
-        
         fileInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (!file) return;
