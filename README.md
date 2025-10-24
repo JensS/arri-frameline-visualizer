@@ -2,7 +2,7 @@
 
 A web-based tool for visualizing ARRI Alexa Mini framelines and corner blackouts. Upload your camera's XML files to preview exactly how your framelines will appear in-camera. Perfect for cinematographers and DITs who need to verify framing guides before shooting.
 
-The live demo is hosted here: `https://www.jenssage.com/arri-frameline-visualizer/`
+The live demo is hosted here: [https://www.jenssage.com/arri-frameline-visualizer/](https://www.jenssage.com/arri-frameline-visualizer/)
 
 ## How to Use
 
