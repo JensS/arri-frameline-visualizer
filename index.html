@@ -1403,6 +1403,7 @@
         loadCameraFormats();
 
         // Set initial state - grey grid as default
+        let activeTab = 'visualize';
         useGreyGrid = true;
         setActiveButton(useGreyGridBtn);
         drawPlaceholder();
@@ -1484,8 +1485,6 @@
         const genEnableB = document.getElementById('genEnableB');
         const formatBFieldset = document.getElementById('formatBFieldset');
         const genDownloadBtn = document.getElementById('genDownloadBtn');
-
-        let activeTab = 'visualize';
 
         tabVisualize.addEventListener('click', () => {
             activeTab = 'visualize';

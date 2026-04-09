@@ -61,7 +61,7 @@
 		<opacity>0</opacity>
 	</surround>
 	<!-- Shading formatA -->
-	<!-- formatA top dimming -->
+	<!-- formatA top-left dimming -->
 	<rect>
 		<top>0</top>
 		<bottom>0.9040697674418605</bottom>
@@ -76,10 +76,10 @@
 			<opacity>1</opacity>
 		</fill>
 	</rect>
-	<!-- formatA bottom dimming -->
+	<!-- formatA bottom-left dimming -->
 	<rect>
-		<top>1</top>
-		<bottom>0.09593023255813954</bottom>
+		<top>0.9040697674418605</top>
+		<bottom>0</bottom>
 		<left>0</left>
 		<right>0.695818345323741</right>
 		<border>
@@ -91,12 +91,12 @@
 			<opacity>1</opacity>
 		</fill>
 	</rect>
-	<!-- formatA left dimming -->
+	<!-- formatA top-right dimming -->
 	<rect>
 		<top>0</top>
 		<bottom>0.9040697674418605</bottom>
-		<left>1</left>
-		<right>0.304181654676259</right>
+		<left>0.695818345323741</left>
+		<right>0</right>
 		<border>
 			<width>0</width>
 			<color>black</color>
@@ -106,12 +106,12 @@
 			<opacity>1</opacity>
 		</fill>
 	</rect>
-	<!-- formatA right dimming -->
+	<!-- formatA bottom-right dimming -->
 	<rect>
-		<top>1</top>
-		<bottom>0.09593023255813954</bottom>
-		<left>1</left>
-		<right>0.304181654676259</right>
+		<top>0.9040697674418605</top>
+		<bottom>0</bottom>
+		<left>0.695818345323741</left>
+		<right>0</right>
 		<border>
 			<width>0</width>
 			<color>black</color>
