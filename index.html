@@ -5,194 +5,311 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARRI Framelines Visualizer - Multi-Camera Support</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: #1a1a1a;
-            color: #e0e0e0;
-            padding: 20px;
+
+        :root {
+            --win-bg: #c0c0c0;
+            --win-dark: #808080;
+            --win-darker: #404040;
+            --win-light: #dfdfdf;
+            --win-white: #ffffff;
+            --win-blue: #000080;
+            --win-blue-light: #1084d0;
+            --win-active: #00007b;
+            --win-sunken-bg: #fff;
+            --win-text: #000;
+            --win-green: #008000;
         }
-        
+
+        body {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            background: var(--win-bg);
+            color: var(--win-text);
+            padding: 8px;
+            font-size: 12px;
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
+
+        /* --- Win95 raised/sunken helpers --- */
+        .raised {
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
+        }
+        .sunken {
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+        }
+
+        /* --- Header / Title Bar --- */
+        .header {
+            background: linear-gradient(90deg, var(--win-active), var(--win-blue-light));
             color: #fff;
-            font-size: 28px;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-weight: 700;
         }
-        
-        .subtitle {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #888;
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h1 {
             font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
         }
-        
+
+        .version-tag {
+            font-size: 10px;
+            font-weight: 400;
+            background: rgba(255,255,255,0.2);
+            padding: 1px 6px;
+            letter-spacing: 0;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 4px;
+        }
+
+        .win-btn {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 11px;
+            padding: 3px 12px;
+            background: var(--win-bg);
+            color: var(--win-text);
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .win-btn:active {
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            padding: 4px 11px 2px 13px;
+        }
+
+        .win-btn:focus {
+            outline: 1px dotted var(--win-text);
+            outline-offset: -4px;
+        }
+
+        .win-btn.active {
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            background: var(--win-dark);
+            color: #fff;
+        }
+
+        /* --- Controls panel --- */
         .controls {
-            background: #2a2a2a;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            background: var(--win-bg);
+            padding: 8px;
+            margin-bottom: 4px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 12px;
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
         }
 
         .control-group {
-            margin-bottom: 15px;
+            margin-bottom: 0;
+        }
+
+        .control-group.full-width {
+            grid-column: 1 / -1;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #ccc;
-            font-size: 14px;
+            margin-bottom: 2px;
+            font-size: 11px;
+            font-weight: 500;
         }
 
         select {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
             width: 100%;
-            padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-radius: 4px;
-            color: #fff;
-            font-size: 14px;
+            padding: 3px 4px;
+            background: var(--win-sunken-bg);
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            color: var(--win-text);
+            font-size: 12px;
             cursor: pointer;
-        }
-
-        select:hover {
-            border-color: #0066cc;
+            border-radius: 0;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%23000' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 4px center;
+            padding-right: 20px;
         }
 
         select:disabled {
-            opacity: 0.5;
+            background: var(--win-bg);
+            color: var(--win-dark);
             cursor: not-allowed;
         }
-        
+
         input[type="file"] {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
             width: 100%;
-            padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-radius: 4px;
-            color: #fff;
+            padding: 2px 4px;
+            background: var(--win-sunken-bg);
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            color: var(--win-text);
+            font-size: 11px;
             cursor: pointer;
         }
-        
+
         input[type="file"]::file-selector-button {
-            background: #0066cc;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            background: var(--win-bg);
+            color: var(--win-text);
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
+            padding: 2px 10px;
             cursor: pointer;
-            margin-right: 10px;
+            margin-right: 8px;
+            font-size: 11px;
+            border-radius: 0;
         }
-        
-        input[type="file"]::file-selector-button:hover {
-            background: #0052a3;
+
+        input[type="file"]::file-selector-button:active {
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
         }
-        
+
         .bg-option-btn {
-            background: #0066cc;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 11px;
+            padding: 3px 12px;
+            background: var(--win-bg);
+            color: var(--win-text);
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
             cursor: pointer;
             flex: 1;
-            font-size: 13px;
-            transition: background 0.2s;
         }
-        
-        .bg-option-btn:hover {
-            background: #0052a3;
+
+        .bg-option-btn:active {
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
         }
-        
+
         .bg-option-btn.active {
-            background: #00cc66;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            background: var(--win-dark);
+            color: #fff;
         }
-        
+
+        /* --- Viewer --- */
         .viewer {
-            background: #2a2a2a;
-            padding: 30px;
-            border-radius: 8px;
+            background: var(--win-bg);
+            padding: 8px;
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 600px;
+            min-height: 500px;
         }
-        
+
         .canvas-container {
             position: relative;
             background: #000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
         }
-        
+
         canvas {
             display: block;
             image-rendering: crisp-edges;
         }
-        
+
+        /* --- Info panel --- */
         .info {
-            background: #2a2a2a;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
+            background: var(--win-bg);
+            padding: 8px;
+            margin-top: 4px;
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
         }
-        
+
         .info h3 {
-            margin-bottom: 10px;
-            color: #fff;
+            font-size: 12px;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--win-dark);
         }
-        
+
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .info-item {
-            background: #1a1a1a;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        
-        .info-label {
-            color: #888;
-            font-size: 12px;
-            margin-bottom: 4px;
-        }
-        
-        .info-value {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .error {
-            background: #ff4444;
-            color: white;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            display: none;
+            gap: 4px;
+            margin-top: 4px;
         }
 
+        .info-item {
+            background: var(--win-sunken-bg);
+            padding: 4px 6px;
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+        }
+
+        .info-label {
+            color: var(--win-dark);
+            font-size: 10px;
+            margin-bottom: 1px;
+        }
+
+        .info-value {
+            color: var(--win-text);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* --- Error --- */
+        .error {
+            background: #fff;
+            color: var(--win-text);
+            padding: 8px;
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            margin-bottom: 4px;
+            display: none;
+            font-weight: 700;
+        }
+
+        .error::before {
+            content: "[!] ";
+            color: red;
+        }
+
+        /* --- Popup / Modal --- */
         .popup {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.5);
             display: none;
             justify-content: center;
             align-items: center;
@@ -200,33 +317,57 @@
         }
 
         .popup-content {
-            background: #2a2a2a;
-            padding: 30px;
-            border-radius: 8px;
+            background: var(--win-bg);
+            padding: 4px;
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
             width: 90%;
-            max-width: 600px;
+            max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
             position: relative;
         }
 
-        .popup-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            color: #888;
-            cursor: pointer;
+        .popup-title-bar {
+            background: linear-gradient(90deg, var(--win-active), var(--win-blue-light));
+            color: #fff;
+            padding: 3px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        .popup-close:hover {
-            color: #fff;
+        .popup-close {
+            background: var(--win-bg);
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
+            color: var(--win-text);
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 700;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .popup-close:active {
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
         }
 
         .popup-title {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .popup-body {
+            padding: 8px;
         }
 
         .xml-file-list {
@@ -239,70 +380,331 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
-            background: #1a1a1a;
-            border-radius: 4px;
-            margin-bottom: 10px;
+            padding: 4px 6px;
+            background: var(--win-sunken-bg);
+            border: 1px solid var(--win-dark);
+            margin-bottom: 4px;
             cursor: pointer;
-            transition: background 0.2s;
         }
 
         .xml-file-item:hover {
-            background: #3a3a3a;
+            background: var(--win-active);
+            color: #fff;
+        }
+
+        .xml-file-item:hover .xml-file-name,
+        .xml-file-item:hover .xml-file-download {
+            color: #fff;
         }
 
         .xml-file-name {
-            font-size: 14px;
-            color: #ccc;
+            font-size: 12px;
+            color: var(--win-text);
         }
 
         .xml-file-download {
-            font-size: 13px;
-            color: #0066cc;
-            text-decoration: none;
-            transition: color 0.2s;
+            font-size: 11px;
+            color: var(--win-blue);
+            text-decoration: underline;
         }
 
-        .xml-file-download:hover {
-            color: #0088ff;
+        /* --- Tabs --- */
+        .tab-bar {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 0;
+        }
+
+        .tab-bar .win-btn {
+            padding: 4px 16px;
+            border-bottom: none;
+            position: relative;
+            top: 2px;
+            z-index: 1;
+        }
+
+        .tab-bar .win-btn.active {
+            background: var(--win-bg);
+            color: var(--win-text);
+            border-bottom: 2px solid var(--win-bg);
+            z-index: 2;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: grid;
+        }
+
+        /* --- Generate panel --- */
+        .generate-controls {
+            background: var(--win-bg);
+            padding: 8px;
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
+            display: none;
+        }
+
+        .generate-controls.active {
+            display: block;
+        }
+
+        .format-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .format-fieldset {
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            padding: 6px;
+            margin: 0;
+        }
+
+        .format-fieldset legend {
+            font-weight: 700;
+            font-size: 11px;
+            padding: 0 4px;
+        }
+
+        .format-fieldset .field-row {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 2px;
+            align-items: center;
+        }
+
+        .format-fieldset .field-row label {
+            min-width: 55px;
+            margin-bottom: 0;
+            font-size: 10px;
+        }
+
+        .format-fieldset .field-row select,
+        .format-fieldset .field-row input {
+            flex: 1;
+        }
+
+        .gen-input {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            padding: 1px 4px;
+            background: var(--win-sunken-bg);
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            color: var(--win-text);
+            font-size: 11px;
+            border-radius: 0;
+        }
+
+        .gen-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+            align-items: center;
+        }
+
+        .gen-actions .win-btn {
+            padding: 3px 12px;
+        }
+
+        .gen-filename {
+            flex: 1;
+        }
+
+        /* --- Footer / Status bar --- */
+        .statusbar {
+            background: var(--win-bg);
+            border: 2px solid;
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            padding: 3px 8px;
+            margin-top: 4px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .statusbar a {
+            color: var(--win-blue);
+        }
+
+        .statusbar a:hover {
+            color: var(--win-text);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>ARRI Framelines Visualizer</h1>
-        <div class="subtitle">Multi-camera support for all ARRI formats</div>
-        
+        <div class="header">
+            <div class="header-left">
+                <h1>ARRI Framelines Visualizer</h1>
+                <span class="version-tag">v1.0</span>
+            </div>
+            <div class="header-right">
+                <button class="win-btn" onclick="window.open('https://www.instagram.com/jenssage.de/','_blank')">@ jenssage.de</button>
+            </div>
+        </div>
+
         <div class="error" id="error"></div>
 
-        <div class="controls">
+        <div class="controls" style="margin-bottom: 0; border-bottom: none;">
             <div class="control-group">
-                <label for="cameraSelect">Select Camera Model:</label>
+                <label for="cameraSelect">Camera Model:</label>
                 <select id="cameraSelect">
                     <option value="">-- Select Camera --</option>
                 </select>
             </div>
             <div class="control-group">
-                <label for="formatSelect">Select Format:</label>
+                <label for="formatSelect">Format:</label>
                 <select id="formatSelect" disabled>
                     <option value="">-- Select Camera First --</option>
                 </select>
             </div>
-            <div class="control-group">
-                <label for="xmlFile">Load Framelines XML File:</label>
+        </div>
+
+        <div class="tab-bar">
+            <button class="win-btn active" id="tabVisualize">Visualize</button>
+            <button class="win-btn" id="tabGenerate">Generate</button>
+        </div>
+
+        <div class="controls tab-content active" id="visualizeControls" style="grid-template-columns: 1fr;">
+            <div class="control-group full-width">
+                <label for="xmlFile">Framelines XML:</label>
                 <div style="display: flex; gap: 10px;">
                     <input type="file" id="xmlFile" accept=".xml" style="flex: 1;" />
                     <button id="selectFromLibrary" class="bg-option-btn">Select from Library</button>
                 </div>
             </div>
-            <div class="control-group">
-                <label>Background Options:</label>
-                <div style="display: flex; gap: 10px; margin-top: 8px;">
+            <div class="control-group full-width">
+                <label>Background:</label>
+                <div style="display: flex; gap: 10px; margin-top: 4px;">
                     <button id="useCustomImage" class="bg-option-btn">Upload Custom Image</button>
                     <button id="useSampleImage" class="bg-option-btn">Use Sample Image</button>
                     <button id="useGreyGrid" class="bg-option-btn">Use Grey Grid</button>
                 </div>
                 <input type="file" id="bgImage" accept="image/*" style="display: none;" />
+            </div>
+        </div>
+
+        <div class="generate-controls" id="generateControls">
+            <div class="format-panels">
+            <fieldset class="format-fieldset">
+                <legend>Format A</legend>
+                <div class="field-row">
+                    <label>Aspect Ratio:</label>
+                    <select id="genAspectA" class="gen-input">
+                        <option value="2.39">2.39:1 (Scope)</option>
+                        <option value="2.0">2:1 (Univisium)</option>
+                        <option value="1.85">1.85:1 (Flat)</option>
+                        <option value="1.7777777778" selected>16:9 (1.78:1)</option>
+                        <option value="1.5">3:2 (1.5:1)</option>
+                        <option value="1.3333333333">4:3 (1.33:1)</option>
+                        <option value="1.0">1:1</option>
+                        <option value="0.8">4:5 (0.8:1)</option>
+                        <option value="0.5625">9:16 (0.5625:1)</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                    <input type="number" id="genCustomAspectA" class="gen-input" style="display:none; max-width:80px;" step="0.01" min="0.1" max="10" placeholder="ratio">
+                </div>
+                <div class="field-row">
+                    <label>Style:</label>
+                    <select id="genStyleA" class="gen-input">
+                        <option value="fullbox">Full Box</option>
+                        <option value="corner">Corner</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Shading:</label>
+                    <select id="genShadingA" class="gen-input">
+                        <option value="0">None</option>
+                        <option value="0.25" selected>25%</option>
+                        <option value="0.5">50%</option>
+                        <option value="1">100% (Blackout)</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Line Width:</label>
+                    <input type="number" id="genLineWidthA" class="gen-input" value="4" min="1" max="8" style="max-width:60px;">
+                </div>
+                <div class="field-row">
+                    <label>Line Color:</label>
+                    <select id="genColorA" class="gen-input">
+                        <option value="user" selected>User (camera menu)</option>
+                        <option value="green">Green</option>
+                        <option value="white">White</option>
+                        <option value="red">Red</option>
+                        <option value="yellow">Yellow</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Name:</label>
+                    <input type="text" id="genNameA" class="gen-input" value="" placeholder="auto">
+                </div>
+            </fieldset>
+
+            <fieldset class="format-fieldset" id="formatBFieldset" style="opacity: 0.5;">
+                <legend><label style="display:inline; min-width:0; cursor:pointer;"><input type="checkbox" id="genEnableB"> Format B</label></legend>
+                <div class="field-row">
+                    <label>Aspect Ratio:</label>
+                    <select id="genAspectB" class="gen-input" disabled>
+                        <option value="2.39">2.39:1 (Scope)</option>
+                        <option value="2.0">2:1 (Univisium)</option>
+                        <option value="1.85">1.85:1 (Flat)</option>
+                        <option value="1.7777777778">16:9 (1.78:1)</option>
+                        <option value="1.5">3:2 (1.5:1)</option>
+                        <option value="1.3333333333">4:3 (1.33:1)</option>
+                        <option value="1.0">1:1</option>
+                        <option value="0.8">4:5 (0.8:1)</option>
+                        <option value="0.5625" selected>9:16 (0.5625:1)</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                    <input type="number" id="genCustomAspectB" class="gen-input" style="display:none; max-width:80px;" step="0.01" min="0.1" max="10" placeholder="ratio">
+                </div>
+                <div class="field-row">
+                    <label>Style:</label>
+                    <select id="genStyleB" class="gen-input" disabled>
+                        <option value="fullbox">Full Box</option>
+                        <option value="corner">Corner</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Shading:</label>
+                    <select id="genShadingB" class="gen-input" disabled>
+                        <option value="0" selected>None</option>
+                        <option value="0.25">25%</option>
+                        <option value="0.5">50%</option>
+                        <option value="1">100% (Blackout)</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Line Width:</label>
+                    <input type="number" id="genLineWidthB" class="gen-input" value="4" min="1" max="8" style="max-width:60px;" disabled>
+                </div>
+                <div class="field-row">
+                    <label>Line Color:</label>
+                    <select id="genColorB" class="gen-input" disabled>
+                        <option value="user" selected>User (camera menu)</option>
+                        <option value="green">Green</option>
+                        <option value="white">White</option>
+                        <option value="red">Red</option>
+                        <option value="yellow">Yellow</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Name:</label>
+                    <input type="text" id="genNameB" class="gen-input" value="" placeholder="auto" disabled>
+                </div>
+            </fieldset>
+            </div>
+
+            <div class="gen-actions">
+                <label>Filename:</label>
+                <input type="text" id="genFilename" class="gen-input gen-filename" value="" placeholder="auto">
+                <button class="win-btn" id="genDownloadBtn">Download XML</button>
             </div>
         </div>
         
@@ -320,19 +722,22 @@
 
     <div id="xmlLibraryPopup" class="popup">
         <div class="popup-content">
-            <span class="popup-close" id="closePopup">&times;</span>
-            <h3 class="popup-title">Select Frameline from Library</h3>
-            <ul class="xml-file-list" id="xmlFileList">
-                <!-- File items will be injected here by JavaScript -->
-            </ul>
+            <div class="popup-title-bar">
+                <span class="popup-title">XML Library</span>
+                <button class="popup-close" id="closePopup">X</button>
+            </div>
+            <div class="popup-body">
+                <ul class="xml-file-list" id="xmlFileList">
+                    <!-- File items will be injected here by JavaScript -->
+                </ul>
+            </div>
         </div>
     </div>
     
-    <footer style="text-align: center; margin-top: 30px; padding: 20px; color: #888; font-size: 14px;">
-        You don't like it? Please fix it yourself :D Here's the github: <a href="https://github.com/JensS/arri-frameline-visualizer" style="color: #0066cc; text-decoration: none;">https://github.com/JensS/arri-frameline-visualizer</a>
-        <br><br>
-        <a href="https://ko-fi.com/jenssage" style="color: #0066cc; text-decoration: none;">☕ Buy me a Ko-Fi</a>
-    </footer>
+    <div class="statusbar">
+        <span>Got ideas or found a bug? PRs welcome &mdash; <a href="https://github.com/JensS/arri-frameline-visualizer">github.com/JensS/arri-frameline-visualizer</a></span>
+        <span><a href="https://ko-fi.com/jenssage">Buy me a coffee</a></span>
+    </div>
     
     <script>
         const canvas = document.getElementById('frameCanvas');
@@ -351,7 +756,7 @@
         const cameraSelect = document.getElementById('cameraSelect');
         const formatSelect = document.getElementById('formatSelect');
 
-        const xmlFiles = ["A-Mini_4x3-2_8K_social-blackouts.xml", "A-Mini_4x3-2.8K_socials.xml"];
+        const xmlFiles = ["A-Mini_4x3-2_8K_social-blackouts.xml", "A-Mini_4x3-2.8K_socials.xml", "FL_AMLF_both_A35style_100.xml"];
 
         let frameData = null;
         let backgroundImage = null;
@@ -446,8 +851,10 @@
 
             selectedFormat = selectedCamera.formats[formatIndex];
 
-            // Redraw if we have frame data
-            if (frameData) {
+            // Redraw based on active tab
+            if (activeTab === 'generate') {
+                updateGeneratorPreview();
+            } else if (frameData) {
                 drawFramelines(frameData);
             } else {
                 drawPlaceholder();
@@ -696,14 +1103,18 @@
                 }
             });
 
-            // Parse lines
+            // Parse lines — track absent vs present elements (null = absent)
             const lineElements = xmlDoc.querySelectorAll('line');
             lineElements.forEach(line => {
                 const framelineRect = line.getAttribute('framelineRect');
-                const top = parseFloat(line.querySelector('top')?.textContent || '0');
-                const bottom = parseFloat(line.querySelector('bottom')?.textContent || '0');
-                const left = parseFloat(line.querySelector('left')?.textContent || '0');
-                const right = parseFloat(line.querySelector('right')?.textContent || '0');
+                const topEl = line.querySelector('top');
+                const bottomEl = line.querySelector('bottom');
+                const leftEl = line.querySelector('left');
+                const rightEl = line.querySelector('right');
+                const top = topEl ? parseFloat(topEl.textContent) : null;
+                const bottom = bottomEl ? parseFloat(bottomEl.textContent) : null;
+                const left = leftEl ? parseFloat(leftEl.textContent) : null;
+                const right = rightEl ? parseFloat(rightEl.textContent) : null;
                 const width = parseInt(line.querySelector('width')?.textContent || '2');
                 const color = line.querySelector('color')?.textContent || 'user';
 
@@ -783,42 +1194,54 @@
             });
             
             // Draw frame lines
+            // Line type is determined by which elements are present (not null) vs absent (null):
+            // - Horizontal: top OR bottom present (not both), plus left and/or right for span
+            // - Vertical: both top AND bottom present, plus left OR right for position
             const lineScale = Math.min(canvas.width / camera.hres, canvas.height / camera.vres);
             lines.forEach(line => {
-                // Use the actual color from the XML file
-                ctx.strokeStyle = line.color;
-                ctx.lineWidth = Math.max(line.width * lineScale, 1); // Ensure lines are at least 1px visible
-                
-                const x1 = line.left * canvas.width;
-                const y1 = line.top * canvas.height;
-                const x2 = canvas.width - (line.right * canvas.width);
-                const y2 = canvas.height - (line.bottom * canvas.height);
-                
+                // Map "user" color to green (ARRI's default user-selectable color)
+                const color = line.color === 'user' ? '#00cc00' : line.color;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = Math.max(line.width * lineScale, 1);
+
+                // Convert insets to pixel positions (null insets default to 0 for position calc)
+                const x1 = (line.left ?? 0) * canvas.width;
+                const y1 = (line.top ?? 0) * canvas.height;
+                const x2 = canvas.width - ((line.right ?? 0) * canvas.width);
+                const y2 = canvas.height - ((line.bottom ?? 0) * canvas.height);
+
+                const hasTop = line.top !== null;
+                const hasBottom = line.bottom !== null;
+                const hasLeft = line.left !== null;
+                const hasRight = line.right !== null;
+
                 ctx.beginPath();
-                
-                // Determine if this is a horizontal or vertical line
-                if (line.top > 0 && line.bottom === 0) {
-                    // Horizontal line at top
+
+                if (hasTop && hasBottom) {
+                    // Vertical line — top and bottom define the vertical span
+                    if (hasLeft && !hasRight) {
+                        // Positioned from left edge
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x1, y2);
+                    } else if (hasRight && !hasLeft) {
+                        // Positioned from right edge
+                        ctx.moveTo(x2, y1);
+                        ctx.lineTo(x2, y2);
+                    } else if (hasLeft && hasRight) {
+                        // Both present — draw left-side vertical (full box left line)
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x1, y2);
+                    }
+                } else if (hasTop && !hasBottom) {
+                    // Horizontal line at top inset position
                     ctx.moveTo(x1, y1);
                     ctx.lineTo(x2, y1);
-                } else if (line.bottom > 0 && line.top === 0) {
-                    // Horizontal line at bottom
+                } else if (hasBottom && !hasTop) {
+                    // Horizontal line at bottom inset position
                     ctx.moveTo(x1, y2);
                     ctx.lineTo(x2, y2);
-                } else if (line.left > 0 && line.right === 0) {
-                    // Vertical line on left
-                    ctx.moveTo(x1, y1);
-                    ctx.lineTo(x1, y2);
-                } else if (line.right > 0 && line.left === 0) {
-                    // Vertical line on right
-                    ctx.moveTo(x2, y1);
-                    ctx.lineTo(x2, y2);
-                } else if (line.top > 0 && line.bottom > 0) {
-                    // Vertical line segment
-                    ctx.moveTo(x1, y1);
-                    ctx.lineTo(x1, y2);
                 }
-                
+
                 ctx.stroke();
             });
             
@@ -970,9 +1393,10 @@
             }
             
             ctx.fillStyle = '#333';
-            ctx.font = '24px Arial';
+            ctx.font = '18px "IBM Plex Mono", monospace';
             ctx.textAlign = 'center';
-            ctx.fillText('Load an XML file to visualize framelines', canvas.width / 2, canvas.height / 2);
+            const msg = activeTab === 'generate' ? 'Select a camera format above' : 'Load an XML file to visualize framelines';
+            ctx.fillText(msg, canvas.width / 2, canvas.height / 2);
         }
         
         // Load camera formats on page load
@@ -1047,6 +1471,335 @@
                 const fileUrl = `xmls/${filename}`;
                 loadXmlFromUrl(fileUrl);
             }
+        });
+
+        // =========================================
+        // Generator Tab
+        // =========================================
+
+        const tabVisualize = document.getElementById('tabVisualize');
+        const tabGenerate = document.getElementById('tabGenerate');
+        const visualizeControls = document.getElementById('visualizeControls');
+        const generateControls = document.getElementById('generateControls');
+        const genEnableB = document.getElementById('genEnableB');
+        const formatBFieldset = document.getElementById('formatBFieldset');
+        const genDownloadBtn = document.getElementById('genDownloadBtn');
+
+        let activeTab = 'visualize';
+
+        tabVisualize.addEventListener('click', () => {
+            activeTab = 'visualize';
+            tabVisualize.classList.add('active');
+            tabGenerate.classList.remove('active');
+            visualizeControls.classList.add('active');
+            generateControls.classList.remove('active');
+            if (frameData) drawFramelines(frameData);
+            else drawPlaceholder();
+        });
+
+        tabGenerate.addEventListener('click', () => {
+            activeTab = 'generate';
+            tabGenerate.classList.add('active');
+            tabVisualize.classList.remove('active');
+            generateControls.classList.add('active');
+            visualizeControls.classList.remove('active');
+            updateGeneratorPreview();
+        });
+
+        // Format B enable/disable
+        genEnableB.addEventListener('change', () => {
+            const enabled = genEnableB.checked;
+            formatBFieldset.style.opacity = enabled ? '1' : '0.5';
+            formatBFieldset.querySelectorAll('select, input[type=number], input[type=text]').forEach(el => {
+                el.disabled = !enabled;
+            });
+            if (activeTab === 'generate') updateGeneratorPreview();
+        });
+
+        // Custom aspect ratio toggle
+        document.getElementById('genAspectA').addEventListener('change', (e) => {
+            document.getElementById('genCustomAspectA').style.display = e.target.value === 'custom' ? '' : 'none';
+            if (activeTab === 'generate') updateGeneratorPreview();
+        });
+        document.getElementById('genAspectB').addEventListener('change', (e) => {
+            document.getElementById('genCustomAspectB').style.display = e.target.value === 'custom' ? '' : 'none';
+            if (activeTab === 'generate') updateGeneratorPreview();
+        });
+
+        // Live preview on any generator input change
+        generateControls.addEventListener('input', () => {
+            if (activeTab === 'generate') updateGeneratorPreview();
+        });
+        generateControls.addEventListener('change', () => {
+            if (activeTab === 'generate') updateGeneratorPreview();
+        });
+
+        function getGenAspect(suffix) {
+            const sel = document.getElementById('genAspect' + suffix);
+            if (sel.value === 'custom') {
+                return parseFloat(document.getElementById('genCustomAspect' + suffix).value) || 1.78;
+            }
+            return parseFloat(sel.value);
+        }
+
+        function getFormatConfig(suffix) {
+            return {
+                aspect: getGenAspect(suffix),
+                style: document.getElementById('genStyle' + suffix).value,
+                shading: parseFloat(document.getElementById('genShading' + suffix).value),
+                lineWidth: parseInt(document.getElementById('genLineWidth' + suffix).value) || 4,
+                color: document.getElementById('genColor' + suffix).value,
+                name: document.getElementById('genName' + suffix).value
+            };
+        }
+
+        function calculateInsets(hres, vres, targetAspect) {
+            const sensorAspect = hres / vres;
+            let topBottom = 0, leftRight = 0;
+            if (targetAspect > sensorAspect) {
+                const frameHeight = hres / targetAspect;
+                topBottom = ((vres - frameHeight) / 2) / vres;
+            } else if (targetAspect < sensorAspect) {
+                const frameWidth = vres * targetAspect;
+                leftRight = ((hres - frameWidth) / 2) / hres;
+            }
+            return { topBottom, leftRight };
+        }
+
+        function generateShadingRects(topBottom, leftRight, opacity) {
+            if (opacity === 0) return [];
+            return [
+                { top: 0, bottom: 1 - topBottom, left: 0, right: leftRight, opacity, color: 'black' },
+                { top: 1 - topBottom, bottom: 0, left: 0, right: leftRight, opacity, color: 'black' },
+                { top: topBottom, bottom: topBottom, left: 0, right: 1 - leftRight, opacity, color: 'black' },
+                { top: topBottom, bottom: topBottom, left: 1 - leftRight, right: 0, opacity, color: 'black' }
+            ];
+        }
+
+        function generateFullBoxLines(formatId, topBottom, leftRight, lineWidth, color) {
+            return [
+                { framelineRect: formatId, top: topBottom, bottom: null, left: leftRight, right: leftRight, width: lineWidth, color },
+                { framelineRect: formatId, top: null, bottom: topBottom, left: leftRight, right: leftRight, width: lineWidth, color },
+                { framelineRect: formatId, top: topBottom, bottom: topBottom, left: leftRight, right: null, width: lineWidth, color },
+                { framelineRect: formatId, top: topBottom, bottom: topBottom, left: null, right: leftRight, width: lineWidth, color }
+            ];
+        }
+
+        function generateCornerLines(formatId, topBottom, leftRight, lineWidth, color, tickLength = 0.1) {
+            const lines = [];
+            // Top-left corner
+            lines.push({ framelineRect: formatId, top: topBottom, bottom: null, left: leftRight, right: 1 - leftRight - tickLength, width: lineWidth, color });
+            lines.push({ framelineRect: formatId, top: topBottom, bottom: 1 - topBottom - tickLength, left: leftRight, right: null, width: lineWidth, color });
+            // Top-right corner
+            lines.push({ framelineRect: formatId, top: topBottom, bottom: null, left: 1 - leftRight - tickLength, right: leftRight, width: lineWidth, color });
+            lines.push({ framelineRect: formatId, top: topBottom, bottom: 1 - topBottom - tickLength, left: null, right: leftRight, width: lineWidth, color });
+            // Bottom-left corner
+            lines.push({ framelineRect: formatId, top: null, bottom: topBottom, left: leftRight, right: 1 - leftRight - tickLength, width: lineWidth, color });
+            lines.push({ framelineRect: formatId, top: 1 - topBottom - tickLength, bottom: topBottom, left: leftRight, right: null, width: lineWidth, color });
+            // Bottom-right corner
+            lines.push({ framelineRect: formatId, top: null, bottom: topBottom, left: 1 - leftRight - tickLength, right: leftRight, width: lineWidth, color });
+            lines.push({ framelineRect: formatId, top: 1 - topBottom - tickLength, bottom: topBottom, left: null, right: leftRight, width: lineWidth, color });
+            return lines;
+        }
+
+        function getAutoFormatName(aspect) {
+            if (Math.abs(aspect - 16/9) < 0.001) return '16x9';
+            if (Math.abs(aspect - 4/3) < 0.001) return '4x3';
+            return `AspectRatio:${aspect.toFixed(2)}:1_Scal100`;
+        }
+
+        function buildFrameDataFromConfig() {
+            if (!selectedFormat) return null;
+
+            const hres = selectedFormat.sensor_photosites.h;
+            const vres = selectedFormat.sensor_photosites.v;
+            const camera = {
+                type: selectedCamera.model,
+                sensor: selectedFormat.recording_resolution || '',
+                aspect: parseFloat((hres / vres).toFixed(2)),
+                hres, vres
+            };
+
+            const rects = [];
+            const lines = [];
+            const framelineNames = {};
+
+            const cfgA = getFormatConfig('A');
+            const insetsA = calculateInsets(hres, vres, cfgA.aspect);
+            const nameA = cfgA.name || getAutoFormatName(cfgA.aspect);
+            framelineNames['formatA'] = nameA;
+
+            rects.push(...generateShadingRects(insetsA.topBottom, insetsA.leftRight, cfgA.shading));
+
+            if (cfgA.style === 'fullbox') {
+                lines.push(...generateFullBoxLines('formatA', insetsA.topBottom, insetsA.leftRight, cfgA.lineWidth, cfgA.color));
+            } else {
+                lines.push(...generateCornerLines('formatA', insetsA.topBottom, insetsA.leftRight, cfgA.lineWidth, cfgA.color));
+            }
+
+            if (genEnableB.checked) {
+                const cfgB = getFormatConfig('B');
+                const insetsB = calculateInsets(hres, vres, cfgB.aspect);
+                const nameB = cfgB.name || getAutoFormatName(cfgB.aspect);
+                framelineNames['formatB'] = nameB;
+
+                rects.push(...generateShadingRects(insetsB.topBottom, insetsB.leftRight, cfgB.shading));
+
+                if (cfgB.style === 'fullbox') {
+                    lines.push(...generateFullBoxLines('formatB', insetsB.topBottom, insetsB.leftRight, cfgB.lineWidth, cfgB.color));
+                } else {
+                    lines.push(...generateCornerLines('formatB', insetsB.topBottom, insetsB.leftRight, cfgB.lineWidth, cfgB.color));
+                }
+            }
+
+            return { camera, rects, lines, framelineNames };
+        }
+
+        function updateGeneratorPreview() {
+            const data = buildFrameDataFromConfig();
+            if (data) {
+                frameData = data;
+                drawFramelines(data);
+            } else {
+                drawPlaceholder();
+            }
+        }
+
+        // XML string generation
+        function generateXMLString() {
+            const data = buildFrameDataFromConfig();
+            if (!data) return null;
+
+            const { camera } = data;
+            const cfgA = getFormatConfig('A');
+            const insetsA = calculateInsets(camera.hres, camera.vres, cfgA.aspect);
+            const nameA = cfgA.name || getAutoFormatName(cfgA.aspect);
+
+            let xml = `<?xml version="1.0" encoding="UTF-8"?>\n\n`;
+            xml += `<!-- Generated by ARRI Framelines Visualizer -->\n`;
+            xml += `<!-- camera model: ${camera.type} -->\n`;
+            xml += `<!-- clip resolution h: ${camera.hres} -->\n`;
+            xml += `<!-- clip resolution v: ${camera.vres} -->\n\n`;
+
+            xml += `<framelines>\n`;
+            xml += `\t<camera>\n`;
+            xml += `\t\t<type>${camera.type}</type>\n`;
+            xml += `\t\t<sensor>${camera.sensor}</sensor>\n`;
+            xml += `\t\t<aspect>${camera.aspect}</aspect>\n`;
+            xml += `\t\t<hres>${camera.hres}</hres>\n`;
+            xml += `\t\t<vres>${camera.vres}</vres>\n`;
+            xml += `\t</camera>\n`;
+            xml += `\t<surround>\n\t\t<opacity>0</opacity>\n\t</surround>\n`;
+
+            // Format A shading rects
+            xml += genRectsXML(insetsA, cfgA.shading, 'formatA');
+
+            // Format A frameline name + lines
+            xml += `\t<framelineName framelineRect="formatA">${escapeXml(nameA)}</framelineName>\n`;
+            xml += genLinesXML('formatA', insetsA, cfgA);
+
+            if (genEnableB.checked) {
+                const cfgB = getFormatConfig('B');
+                const insetsB = calculateInsets(camera.hres, camera.vres, cfgB.aspect);
+                const nameB = cfgB.name || getAutoFormatName(cfgB.aspect);
+
+                xml += genRectsXML(insetsB, cfgB.shading, 'formatB');
+                xml += `\t<framelineName framelineRect="formatB">${escapeXml(nameB)}</framelineName>\n`;
+                xml += genLinesXML('formatB', insetsB, cfgB);
+            }
+
+            xml += `</framelines>\n`;
+            return xml;
+        }
+
+        function escapeXml(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function genRectsXML(insets, opacity, label) {
+            if (opacity === 0) return '';
+            const tb = insets.topBottom;
+            const lr = insets.leftRight;
+            let xml = `\t<!-- Shading ${label} -->\n`;
+            const rects = [
+                { top: 0, bottom: 1 - tb, left: 0, right: lr, comment: 'top' },
+                { top: 1 - tb, bottom: 0, left: 0, right: lr, comment: 'bottom' },
+                { top: tb, bottom: tb, left: 0, right: 1 - lr, comment: 'left' },
+                { top: tb, bottom: tb, left: 1 - lr, right: 0, comment: 'right' }
+            ];
+            for (const r of rects) {
+                xml += `\t<!-- ${label} ${r.comment} dimming -->\n`;
+                xml += `\t<rect>\n`;
+                xml += `\t\t<top>${r.top}</top>\n`;
+                xml += `\t\t<bottom>${r.bottom}</bottom>\n`;
+                xml += `\t\t<left>${r.left}</left>\n`;
+                xml += `\t\t<right>${r.right}</right>\n`;
+                xml += `\t\t<border>\n\t\t\t<width>0</width>\n\t\t\t<color>black</color>\n\t\t</border>\n`;
+                xml += `\t\t<fill>\n\t\t\t<color>black</color>\n\t\t\t<opacity>${opacity}</opacity>\n\t\t</fill>\n`;
+                xml += `\t</rect>\n`;
+            }
+            return xml;
+        }
+
+        function genLinesXML(formatId, insets, cfg) {
+            const tb = insets.topBottom;
+            const lr = insets.leftRight;
+            let xml = '';
+
+            if (cfg.style === 'fullbox') {
+                xml += `\t<line framelineRect="${formatId}">\n\t\t<top>${tb}</top>\n\t\t<left>${lr}</left>\n\t\t<right>${lr}</right>\n\t\t<width>${cfg.lineWidth}</width>\n\t\t<color>${cfg.color}</color>\n\t</line>\n`;
+                xml += `\t<line framelineRect="${formatId}">\n\t\t<bottom>${tb}</bottom>\n\t\t<left>${lr}</left>\n\t\t<right>${lr}</right>\n\t\t<width>${cfg.lineWidth}</width>\n\t\t<color>${cfg.color}</color>\n\t</line>\n`;
+                xml += `\t<line framelineRect="${formatId}">\n\t\t<top>${tb}</top>\n\t\t<bottom>${tb}</bottom>\n\t\t<left>${lr}</left>\n\t\t<width>${cfg.lineWidth}</width>\n\t\t<color>${cfg.color}</color>\n\t</line>\n`;
+                xml += `\t<line framelineRect="${formatId}">\n\t\t<top>${tb}</top>\n\t\t<bottom>${tb}</bottom>\n\t\t<right>${lr}</right>\n\t\t<width>${cfg.lineWidth}</width>\n\t\t<color>${cfg.color}</color>\n\t</line>\n`;
+            } else {
+                const tick = 0.1;
+                // 8 corner lines
+                const corners = [
+                    { comment: 'Left top', top: tb, left: lr, right: 1 - lr - tick },
+                    { comment: 'Right top', top: tb, left: 1 - lr - tick, right: lr },
+                    { comment: 'Left bottom', bottom: tb, left: lr, right: 1 - lr - tick },
+                    { comment: 'Right bottom', bottom: tb, left: 1 - lr - tick, right: lr },
+                    { comment: 'Top left', top: tb, bottom: 1 - tb - tick, left: lr },
+                    { comment: 'Top right', top: tb, bottom: 1 - tb - tick, right: lr },
+                    { comment: 'Bottom left', bottom: tb, top: 1 - tb - tick, left: lr },
+                    { comment: 'Bottom right', bottom: tb, top: 1 - tb - tick, right: lr }
+                ];
+                for (const c of corners) {
+                    xml += `\t<!-- ${c.comment} -->\n`;
+                    xml += `\t<line framelineRect="${formatId}">\n`;
+                    if (c.top !== undefined) xml += `\t\t<top>${c.top}</top>\n`;
+                    if (c.bottom !== undefined) xml += `\t\t<bottom>${c.bottom}</bottom>\n`;
+                    if (c.left !== undefined) xml += `\t\t<left>${c.left}</left>\n`;
+                    if (c.right !== undefined) xml += `\t\t<right>${c.right}</right>\n`;
+                    xml += `\t\t<width>${cfg.lineWidth}</width>\n\t\t<color>${cfg.color}</color>\n\t</line>\n`;
+                }
+            }
+            return xml;
+        }
+
+        function getAutoFilename() {
+            if (!selectedCamera || !selectedFormat) return 'framelines.xml';
+            const cam = selectedCamera.model.replace(/\s+/g, '-');
+            const fmt = selectedFormat.name.replace(/[\s:]+/g, '-');
+            return `FL_${cam}_${fmt}.xml`;
+        }
+
+        genDownloadBtn.addEventListener('click', () => {
+            if (!selectedFormat) {
+                showError('Please select a camera and format first.');
+                return;
+            }
+            const xmlString = generateXMLString();
+            if (!xmlString) return;
+
+            const filename = document.getElementById('genFilename').value || getAutoFilename();
+            const blob = new Blob([xmlString], { type: 'application/xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename.endsWith('.xml') ? filename : filename + '.xml';
+            a.click();
+            URL.revokeObjectURL(url);
         });
     </script>
 </body>
