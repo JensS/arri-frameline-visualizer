@@ -26,3 +26,20 @@ Open `index.html` in a browser. No server required for basic testing, though fet
 - **Canvas rendering**: Uses HTML5 Canvas API. Background (image/grey grid) is drawn first, then rect overlays (black at varying opacity), then colored frame lines
 - **Aspect ratio validation**: Uploaded images are validated against the selected camera format with 5% tolerance
 - **XML library**: The `xmlFiles` array in the script hardcodes the list of available XML files from `xmls/`; adding a new XML file requires updating this array
+
+## XML Library File Naming Convention
+
+Files in `xmls/` follow this pattern:
+
+```
+FL_{Camera}_{Format}_{Framelines}.xml
+```
+
+- **FL** — prefix, stands for "Frameline"
+- **Camera** — short camera code: `AMini` (ALEXA Mini), `AMiniLF` (ALEXA Mini LF), `A35` (ALEXA 35), `AXT` (ALEXA XT), `ASXT` (ALEXA SXT), `ALF` (ALEXA LF), `A65` (ALEXA 65)
+- **Format** — recording format shorthand matching the camera's sensor mode, e.g. `4x3-2.8K`, `LF-OG-4.5K`, `16x9-3.2K`
+- **Framelines** — describes the frameline content: aspect ratios joined by `-` (e.g. `16x9-9x16`), followed by style (`fullbox`/`corner`) and shading (`shade25`/`shade50`/`blackout`/`noshade`)
+
+Examples:
+- `FL_AMini_4x3-2.8K_16x9-9x16-corner-shade25.xml`
+- `FL_AMiniLF_LF-OG-4.5K_16x9-9x16-fullbox-blackout.xml`

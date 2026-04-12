@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARRI Framelines Visualizer - Multi-Camera Support</title>
+    <title>Unofficial ARRI Framelines Visualizer</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap');
 
@@ -228,7 +228,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 500px;
         }
 
         .canvas-container {
@@ -236,10 +235,14 @@
             background: #000;
             border: 2px solid;
             border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            width: 100%;
+            max-width: 1200px;
         }
 
         canvas {
             display: block;
+            width: 100%;
+            height: auto;
             image-rendering: crisp-edges;
         }
 
@@ -392,8 +395,7 @@
             color: #fff;
         }
 
-        .xml-file-item:hover .xml-file-name,
-        .xml-file-item:hover .xml-file-download {
+        .xml-file-item:hover .xml-file-name {
             color: #fff;
         }
 
@@ -403,9 +405,41 @@
         }
 
         .xml-file-download {
-            font-size: 11px;
-            color: var(--win-blue);
-            text-decoration: underline;
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 10px;
+            color: var(--win-text);
+            text-decoration: none;
+            background: var(--win-bg);
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
+            padding: 2px 8px 2px 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .xml-file-download:active {
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+        }
+
+        .xml-file-download::before {
+            content: '';
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='2' y='1' width='12' height='10' fill='%23c0c0c0' stroke='%23000' stroke-width='1'/%3E%3Crect x='3' y='2' width='10' height='8' fill='%23fff'/%3E%3Cline x1='5' y1='4' x2='11' y2='4' stroke='%23000080' stroke-width='1'/%3E%3Cline x1='5' y1='6' x2='11' y2='6' stroke='%23000080' stroke-width='1'/%3E%3Cline x1='5' y1='8' x2='9' y2='8' stroke='%23000080' stroke-width='1'/%3E%3Cpolygon points='8,10 5,7 11,7' fill='%23000'/%3E%3Crect x='7' y='10' width='2' height='3' fill='%23000'/%3E%3Crect x='3' y='13' width='10' height='2' fill='%23808080' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .xml-library-remark {
+            font-size: 10px;
+            color: var(--win-dark);
+            margin-top: 8px;
+            padding: 4px 6px;
+            border-top: 1px solid var(--win-dark);
         }
 
         /* --- Tabs --- */
@@ -451,43 +485,6 @@
             display: block;
         }
 
-        .format-panels {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .format-fieldset {
-            border: 2px solid;
-            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
-            padding: 6px;
-            margin: 0;
-        }
-
-        .format-fieldset legend {
-            font-weight: 700;
-            font-size: 11px;
-            padding: 0 4px;
-        }
-
-        .format-fieldset .field-row {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 2px;
-            align-items: center;
-        }
-
-        .format-fieldset .field-row label {
-            min-width: 55px;
-            margin-bottom: 0;
-            font-size: 10px;
-        }
-
-        .format-fieldset .field-row select,
-        .format-fieldset .field-row input {
-            flex: 1;
-        }
-
         .gen-input {
             font-family: 'IBM Plex Mono', 'Courier New', monospace;
             padding: 1px 4px;
@@ -495,23 +492,100 @@
             border: 2px solid;
             border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
             color: var(--win-text);
-            font-size: 11px;
+            font-size: 10px;
             border-radius: 0;
         }
 
-        .gen-actions {
+        .gen-toolbar {
             display: flex;
-            gap: 8px;
-            margin-top: 6px;
             align-items: center;
+            gap: 4px;
+            padding: 3px 6px;
+            border-bottom: 1px solid var(--win-dark);
         }
 
-        .gen-actions .win-btn {
-            padding: 3px 12px;
+        .tool-btn {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            background: var(--win-bg);
+            color: var(--win-text);
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
+            cursor: pointer;
         }
 
-        .gen-filename {
-            flex: 1;
+        .tool-btn.active {
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            background: var(--win-dark);
+            color: #fff;
+        }
+
+        .tool-sep {
+            width: 1px;
+            height: 18px;
+            background: var(--win-dark);
+            margin: 0 2px;
+            flex-shrink: 0;
+        }
+
+        .layer-tabs {
+            display: flex;
+            gap: 2px;
+        }
+
+        .layer-tab {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            background: var(--win-bg);
+            color: var(--win-text);
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker) var(--win-darker) var(--win-white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .layer-tab.active {
+            border-color: var(--win-darker) var(--win-white) var(--win-white) var(--win-darker);
+            background: var(--win-sunken-bg);
+        }
+
+        .layer-tab .layer-vis {
+            margin: 0;
+            cursor: pointer;
+            width: 10px;
+            height: 10px;
+        }
+
+        .layer-swatch {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border: 1px solid var(--win-darker);
+        }
+
+        .gen-layer-row, .gen-rect-row {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 6px;
+            font-size: 10px;
+            border-bottom: 1px solid var(--win-dark);
+            overflow-x: auto;
+        }
+
+        .gen-layer-row label, .gen-rect-row span {
+            font-size: 10px;
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+
+        .gen-layer-row .gen-input, .gen-rect-row .gen-input {
+            font-size: 10px;
+            padding: 0px 2px;
         }
 
         /* --- Footer / Status bar --- */
@@ -541,8 +615,8 @@
     <div class="container">
         <div class="header">
             <div class="header-left">
-                <h1>ARRI Framelines Visualizer</h1>
-                <span class="version-tag">v1.0</span>
+                <h1>Unofficial ARRI Framelines Visualizer</h1>
+                <span class="version-tag">v1.1</span>
             </div>
             <div class="header-right">
                 <button class="win-btn" onclick="window.open('https://www.instagram.com/jenssage.de/','_blank')">@ jenssage.de</button>
@@ -576,7 +650,7 @@
                 <label for="xmlFile">Framelines XML:</label>
                 <div style="display: flex; gap: 10px;">
                     <input type="file" id="xmlFile" accept=".xml" style="flex: 1;" />
-                    <button id="selectFromLibrary" class="bg-option-btn">Select from Library</button>
+                    <button id="selectFromLibrary" class="bg-option-btn">Select frameline .XML from library</button>
                 </div>
             </div>
             <div class="control-group full-width">
@@ -591,120 +665,70 @@
         </div>
 
         <div class="generate-controls" id="generateControls">
-            <div class="format-panels">
-            <fieldset class="format-fieldset">
-                <legend>Format A</legend>
-                <div class="field-row">
-                    <label>Aspect Ratio:</label>
-                    <select id="genAspectA" class="gen-input">
-                        <option value="2.39">2.39:1 (Scope)</option>
-                        <option value="2.0">2:1 (Univisium)</option>
-                        <option value="1.85">1.85:1 (Flat)</option>
-                        <option value="1.7777777778" selected>16:9 (1.78:1)</option>
-                        <option value="1.5">3:2 (1.5:1)</option>
-                        <option value="1.3333333333">4:3 (1.33:1)</option>
-                        <option value="1.0">1:1</option>
-                        <option value="0.8">4:5 (0.8:1)</option>
-                        <option value="0.5625">9:16 (0.5625:1)</option>
-                        <option value="custom">Custom...</option>
-                    </select>
-                    <input type="number" id="genCustomAspectA" class="gen-input" style="display:none; max-width:80px;" step="0.01" min="0.1" max="10" placeholder="ratio">
+            <div class="gen-toolbar">
+                <button class="tool-btn active" id="toolSelect" title="Select & move rects">Sel</button>
+                <button class="tool-btn" id="toolDrawRect" title="Draw rectangle">+Rect</button>
+                <span class="tool-sep"></span>
+                <div class="layer-tabs">
+                    <button class="layer-tab active" data-idx="0"><input type="checkbox" class="layer-vis" checked><span class="layer-swatch" style="background:#00cc00"></span> A</button>
+                    <button class="layer-tab" data-idx="1"><input type="checkbox" class="layer-vis" checked><span class="layer-swatch" style="background:#00cccc"></span> B</button>
+                    <button class="layer-tab" data-idx="2"><input type="checkbox" class="layer-vis" checked><span class="layer-swatch" style="background:#cccc00"></span> C</button>
                 </div>
-                <div class="field-row">
-                    <label>Style:</label>
-                    <select id="genStyleA" class="gen-input">
-                        <option value="fullbox">Full Box</option>
-                        <option value="corner">Corner</option>
-                    </select>
-                </div>
-                <div class="field-row">
-                    <label>Shading:</label>
-                    <select id="genShadingA" class="gen-input">
-                        <option value="0">None</option>
-                        <option value="0.25" selected>25%</option>
-                        <option value="0.5">50%</option>
-                        <option value="1">100% (Blackout)</option>
-                    </select>
-                </div>
-                <div class="field-row">
-                    <label>Line Width:</label>
-                    <input type="number" id="genLineWidthA" class="gen-input" value="4" min="1" max="8" style="max-width:60px;">
-                </div>
-                <div class="field-row">
-                    <label>Line Color:</label>
-                    <select id="genColorA" class="gen-input">
-                        <option value="user" selected>User (camera menu)</option>
-                        <option value="green">Green</option>
-                        <option value="white">White</option>
-                        <option value="red">Red</option>
-                        <option value="yellow">Yellow</option>
-                    </select>
-                </div>
-                <div class="field-row">
-                    <label>Name:</label>
-                    <input type="text" id="genNameA" class="gen-input" value="" placeholder="auto">
-                </div>
-            </fieldset>
-
-            <fieldset class="format-fieldset" id="formatBFieldset" style="opacity: 0.5;">
-                <legend><label style="display:inline; min-width:0; cursor:pointer;"><input type="checkbox" id="genEnableB"> Format B</label></legend>
-                <div class="field-row">
-                    <label>Aspect Ratio:</label>
-                    <select id="genAspectB" class="gen-input" disabled>
-                        <option value="2.39">2.39:1 (Scope)</option>
-                        <option value="2.0">2:1 (Univisium)</option>
-                        <option value="1.85">1.85:1 (Flat)</option>
-                        <option value="1.7777777778">16:9 (1.78:1)</option>
-                        <option value="1.5">3:2 (1.5:1)</option>
-                        <option value="1.3333333333">4:3 (1.33:1)</option>
-                        <option value="1.0">1:1</option>
-                        <option value="0.8">4:5 (0.8:1)</option>
-                        <option value="0.5625" selected>9:16 (0.5625:1)</option>
-                        <option value="custom">Custom...</option>
-                    </select>
-                    <input type="number" id="genCustomAspectB" class="gen-input" style="display:none; max-width:80px;" step="0.01" min="0.1" max="10" placeholder="ratio">
-                </div>
-                <div class="field-row">
-                    <label>Style:</label>
-                    <select id="genStyleB" class="gen-input" disabled>
-                        <option value="fullbox">Full Box</option>
-                        <option value="corner">Corner</option>
-                    </select>
-                </div>
-                <div class="field-row">
-                    <label>Shading:</label>
-                    <select id="genShadingB" class="gen-input" disabled>
-                        <option value="0" selected>None</option>
-                        <option value="0.25">25%</option>
-                        <option value="0.5">50%</option>
-                        <option value="1">100% (Blackout)</option>
-                    </select>
-                </div>
-                <div class="field-row">
-                    <label>Line Width:</label>
-                    <input type="number" id="genLineWidthB" class="gen-input" value="4" min="1" max="8" style="max-width:60px;" disabled>
-                </div>
-                <div class="field-row">
-                    <label>Line Color:</label>
-                    <select id="genColorB" class="gen-input" disabled>
-                        <option value="user" selected>User (camera menu)</option>
-                        <option value="green">Green</option>
-                        <option value="white">White</option>
-                        <option value="red">Red</option>
-                        <option value="yellow">Yellow</option>
-                    </select>
-                </div>
-                <div class="field-row">
-                    <label>Name:</label>
-                    <input type="text" id="genNameB" class="gen-input" value="" placeholder="auto" disabled>
-                </div>
-            </fieldset>
+                <span class="tool-sep"></span>
+                <span style="font-size:10px;color:var(--win-dark)" id="layerStatus">Layer A</span>
+                <div style="flex:1"></div>
+                <input type="text" id="genFilename" class="gen-input" style="width:130px" placeholder="filename (auto)">
+                <button class="win-btn" id="genDownloadBtn" style="font-size:10px;padding:2px 8px">Download XML</button>
             </div>
-
-            <div class="gen-actions">
-                <label>Filename:</label>
-                <input type="text" id="genFilename" class="gen-input gen-filename" value="" placeholder="auto">
-                <button class="win-btn" id="genDownloadBtn">Download XML</button>
+            <div class="gen-layer-row" id="layerSettingsRow">
+                <label>Aspect:</label>
+                <select id="lyrAspect" class="gen-input">
+                    <option value="2.39">2.39:1</option>
+                    <option value="2.0">2:1</option>
+                    <option value="1.85">1.85:1</option>
+                    <option value="1.7778" selected>16:9</option>
+                    <option value="1.5">3:2</option>
+                    <option value="1.3333">4:3</option>
+                    <option value="1.0">1:1</option>
+                    <option value="0.8">4:5</option>
+                    <option value="0.5625">9:16</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <input type="number" id="lyrCustomAspect" class="gen-input" style="display:none;width:50px" step="0.01" min="0.1" max="10" placeholder="ratio">
+                <label>Style:</label>
+                <select id="lyrStyle" class="gen-input">
+                    <option value="fullbox">Full Box</option>
+                    <option value="corner">Corner</option>
+                </select>
+                <label>W:</label>
+                <input type="number" id="lyrLineWidth" class="gen-input" value="4" min="1" max="8" style="width:34px">
+                <label>Color:</label>
+                <select id="lyrColor" class="gen-input">
+                    <option value="user">User</option>
+                    <option value="green">Green</option>
+                    <option value="white">White</option>
+                    <option value="red">Red</option>
+                    <option value="yellow">Yellow</option>
+                </select>
+                <label>Name:</label>
+                <input type="text" id="lyrName" class="gen-input" placeholder="auto" style="width:80px">
+                <span class="tool-sep"></span>
+                <select id="lyrAutoShade" class="gen-input" title="Auto-generate shading rects">
+                    <option value="">+Shade...</option>
+                    <option value="0.25">25%</option>
+                    <option value="0.5">50%</option>
+                    <option value="1">Blackout</option>
+                    <option value="clear">Clear rects</option>
+                </select>
+            </div>
+            <div class="gen-rect-row" id="rectPropsRow" style="display:none">
+                <span>Rect:</span>
+                <span>T:</span><input type="number" id="rpTop" class="gen-input" step="0.001" min="0" max="1" style="width:55px">
+                <span>B:</span><input type="number" id="rpBottom" class="gen-input" step="0.001" min="0" max="1" style="width:55px">
+                <span>L:</span><input type="number" id="rpLeft" class="gen-input" step="0.001" min="0" max="1" style="width:55px">
+                <span>R:</span><input type="number" id="rpRight" class="gen-input" step="0.001" min="0" max="1" style="width:55px">
+                <span>Op:</span><input type="number" id="rpOpacity" class="gen-input" step="0.05" min="0" max="1" style="width:45px">
+                <button class="win-btn" id="rpDelete" style="font-size:10px;padding:1px 6px">Del</button>
             </div>
         </div>
         
@@ -730,6 +754,7 @@
                 <ul class="xml-file-list" id="xmlFileList">
                     <!-- File items will be injected here by JavaScript -->
                 </ul>
+                <div class="xml-library-remark">Got frameline XMLs you'd like to share with others? Send them to <a href="mailto:contact@jenssage.com" style="color: var(--win-blue);">contact@jenssage.com</a></div>
             </div>
         </div>
     </div>
@@ -756,7 +781,7 @@
         const cameraSelect = document.getElementById('cameraSelect');
         const formatSelect = document.getElementById('formatSelect');
 
-        const xmlFiles = ["A-Mini_4x3-2_8K_social-blackouts.xml", "A-Mini_4x3-2.8K_socials.xml", "FL_AMLF_both_A35style_100.xml"];
+        const xmlFiles = ["FL_AMini_4x3-2.8K_16x9-9x16-corner-shade25.xml", "FL_AMini_4x3-2.8K_16x9-9x16-corner-blackout.xml", "FL_AMiniLF_LF-OG-4.5K_16x9-9x16-fullbox-blackout.xml"];
 
         let frameData = null;
         let backgroundImage = null;
@@ -936,6 +961,96 @@
 
             if (infoHtml) {
                 cameraInfoDiv.innerHTML = infoHtml;
+            }
+        }
+
+        function findMatchingCameraAndFormat(cameraType, hres, vres) {
+            if (!cameraFormats || !cameraFormats.cameras) return null;
+
+            const typeLower = cameraType.toLowerCase().replace(/\s+/g, ' ').trim();
+
+            let bestCameraIdx = -1;
+            let bestScore = 0;
+
+            cameraFormats.cameras.forEach((camera, idx) => {
+                const modelLower = camera.model.toLowerCase();
+                let score = 0;
+
+                if (modelLower === typeLower) {
+                    score = 100;
+                } else {
+                    const escaped = typeLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const endsWithType = new RegExp('(^|[\\s&])' + escaped + '$', 'i');
+                    const containsType = new RegExp('(^|[\\s&])' + escaped + '([\\s&]|$)', 'i');
+                    if (endsWithType.test(modelLower)) {
+                        score = 95;
+                    } else if (containsType.test(modelLower)) {
+                        score = 80 - (modelLower.length - typeLower.length);
+                    } else if (modelLower.includes(typeLower)) {
+                        score = 70 - (modelLower.length - typeLower.length);
+                    } else if (typeLower.includes(modelLower)) {
+                        score = 60;
+                    } else {
+                        const typeWords = typeLower.split(' ');
+                        const modelWords = modelLower.split(/[\s&]+/).filter(w => w);
+                        const matches = typeWords.filter(w => modelWords.includes(w)).length;
+                        if (matches >= 2) score = 40 + matches * 5;
+                    }
+                }
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestCameraIdx = idx;
+                }
+            });
+
+            if (bestCameraIdx < 0) return null;
+
+            const camera = cameraFormats.cameras[bestCameraIdx];
+            let bestFormatIdx = -1;
+
+            camera.formats.forEach((fmt, idx) => {
+                if (fmt.sensor_photosites.h === hres && fmt.sensor_photosites.v === vres) {
+                    bestFormatIdx = idx;
+                }
+            });
+
+            if (bestFormatIdx < 0) {
+                const resString = `${hres}x${vres}`;
+                camera.formats.forEach((fmt, idx) => {
+                    if (fmt.recording_resolution === resString) {
+                        bestFormatIdx = idx;
+                    }
+                });
+            }
+
+            if (bestFormatIdx < 0) {
+                const targetAspect = hres / vres;
+                let closestDiff = Infinity;
+                camera.formats.forEach((fmt, idx) => {
+                    const fmtAspect = fmt.sensor_photosites.h / fmt.sensor_photosites.v;
+                    const diff = Math.abs(fmtAspect - targetAspect);
+                    if (diff < closestDiff) {
+                        closestDiff = diff;
+                        bestFormatIdx = idx;
+                    }
+                });
+            }
+
+            return { cameraIndex: bestCameraIdx, formatIndex: bestFormatIdx };
+        }
+
+        function applyCameraFormatMatch(cameraType, hres, vres) {
+            const match = findMatchingCameraAndFormat(cameraType, hres, vres);
+            if (!match) return;
+
+            cameraSelect.value = match.cameraIndex;
+            selectedCamera = cameraFormats.cameras[match.cameraIndex];
+            populateFormatDropdown(match.cameraIndex);
+
+            if (match.formatIndex >= 0) {
+                formatSelect.value = match.formatIndex;
+                selectedFormat = selectedCamera.formats[match.formatIndex];
             }
         }
 
@@ -1345,6 +1460,7 @@
                 try {
                     const xmlText = e.target.result;
                     frameData = parseXML(xmlText);
+                    applyCameraFormatMatch(frameData.camera.type, frameData.camera.hres, frameData.camera.vres);
                     drawFramelines(frameData);
                 } catch (error) {
                     showError(`Error loading XML: ${error.message}`);
@@ -1421,7 +1537,7 @@
 
                 const downloadLink = document.createElement('a');
                 downloadLink.classList.add('xml-file-download');
-                downloadLink.textContent = 'Download';
+                downloadLink.textContent = 'Save';
                 downloadLink.href = `xmls/${file}`;
                 downloadLink.download = file;
 
@@ -1437,6 +1553,7 @@
                 .then(xmlText => {
                     try {
                         frameData = parseXML(xmlText);
+                        applyCameraFormatMatch(frameData.camera.type, frameData.camera.hres, frameData.camera.vres);
                         drawFramelines(frameData);
                         xmlLibraryPopup.style.display = 'none';
                     } catch (error) {
@@ -1475,23 +1592,33 @@
         });
 
         // =========================================
-        // Generator Tab
+        // Generator Tab — Layer-based editor
         // =========================================
 
         const tabVisualize = document.getElementById('tabVisualize');
         const tabGenerate = document.getElementById('tabGenerate');
         const visualizeControls = document.getElementById('visualizeControls');
         const generateControls = document.getElementById('generateControls');
-        const genEnableB = document.getElementById('genEnableB');
-        const formatBFieldset = document.getElementById('formatBFieldset');
         const genDownloadBtn = document.getElementById('genDownloadBtn');
 
+        const genLayers = [
+            { visible: true, name: '', aspect: 1.7778, style: 'fullbox', lineWidth: 4, color: 'user', rects: [] },
+            { visible: true, name: '', aspect: 0.5625, style: 'corner', lineWidth: 4, color: 'user', rects: [] },
+            { visible: true, name: '', aspect: 1.0, style: 'fullbox', lineWidth: 4, color: 'user', rects: [] }
+        ];
+        let activeLayerIdx = 0;
+        let genTool = 'select';
+        let selectedRect = null;
+        let dragState = null;
+
+        // Tab switching
         tabVisualize.addEventListener('click', () => {
             activeTab = 'visualize';
             tabVisualize.classList.add('active');
             tabGenerate.classList.remove('active');
             visualizeControls.classList.add('active');
             generateControls.classList.remove('active');
+            canvas.style.cursor = '';
             if (frameData) drawFramelines(frameData);
             else drawPlaceholder();
         });
@@ -1505,63 +1632,282 @@
             updateGeneratorPreview();
         });
 
-        // Format B enable/disable
-        genEnableB.addEventListener('change', () => {
-            const enabled = genEnableB.checked;
-            formatBFieldset.style.opacity = enabled ? '1' : '0.5';
-            formatBFieldset.querySelectorAll('select, input[type=number], input[type=text]').forEach(el => {
-                el.disabled = !enabled;
+        // Tool buttons
+        const toolSelect = document.getElementById('toolSelect');
+        const toolDrawRect = document.getElementById('toolDrawRect');
+        toolSelect.addEventListener('click', () => {
+            genTool = 'select';
+            toolSelect.classList.add('active');
+            toolDrawRect.classList.remove('active');
+            canvas.style.cursor = '';
+        });
+        toolDrawRect.addEventListener('click', () => {
+            genTool = 'rect';
+            toolDrawRect.classList.add('active');
+            toolSelect.classList.remove('active');
+            canvas.style.cursor = 'crosshair';
+        });
+
+        // Layer tabs
+        const layerTabs = document.querySelectorAll('.layer-tab');
+        layerTabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                if (e.target.classList.contains('layer-vis')) return;
+                setActiveLayer(parseInt(tab.dataset.idx));
             });
-            if (activeTab === 'generate') updateGeneratorPreview();
+            tab.querySelector('.layer-vis').addEventListener('change', (e) => {
+                e.stopPropagation();
+                genLayers[parseInt(tab.dataset.idx)].visible = e.target.checked;
+                updateGeneratorPreview();
+            });
         });
 
-        // Custom aspect ratio toggle
-        document.getElementById('genAspectA').addEventListener('change', (e) => {
-            document.getElementById('genCustomAspectA').style.display = e.target.value === 'custom' ? '' : 'none';
-            if (activeTab === 'generate') updateGeneratorPreview();
-        });
-        document.getElementById('genAspectB').addEventListener('change', (e) => {
-            document.getElementById('genCustomAspectB').style.display = e.target.value === 'custom' ? '' : 'none';
-            if (activeTab === 'generate') updateGeneratorPreview();
-        });
+        function setActiveLayer(idx) {
+            activeLayerIdx = idx;
+            selectedRect = null;
+            document.getElementById('rectPropsRow').style.display = 'none';
+            layerTabs.forEach(t => t.classList.remove('active'));
+            layerTabs[idx].classList.add('active');
+            document.getElementById('layerStatus').textContent = 'Layer ' + 'ABC'[idx];
+            loadLayerToUI(genLayers[idx]);
+            updateGeneratorPreview();
+        }
 
-        // Live preview on any generator input change
-        generateControls.addEventListener('input', () => {
-            if (activeTab === 'generate') updateGeneratorPreview();
-        });
-        generateControls.addEventListener('change', () => {
-            if (activeTab === 'generate') updateGeneratorPreview();
-        });
+        // Layer settings UI
+        const lyrAspect = document.getElementById('lyrAspect');
+        const lyrCustomAspect = document.getElementById('lyrCustomAspect');
+        const lyrStyle = document.getElementById('lyrStyle');
+        const lyrLineWidth = document.getElementById('lyrLineWidth');
+        const lyrColor = document.getElementById('lyrColor');
+        const lyrName = document.getElementById('lyrName');
+        const lyrAutoShade = document.getElementById('lyrAutoShade');
 
-        function getGenAspect(suffix) {
-            const sel = document.getElementById('genAspect' + suffix);
-            if (sel.value === 'custom') {
-                return parseFloat(document.getElementById('genCustomAspect' + suffix).value) || 1.78;
+        function loadLayerToUI(layer) {
+            let found = false;
+            for (const opt of lyrAspect.options) {
+                if (opt.value !== 'custom' && Math.abs(parseFloat(opt.value) - layer.aspect) < 0.002) {
+                    lyrAspect.value = opt.value; found = true; break;
+                }
             }
-            return parseFloat(sel.value);
+            if (!found) { lyrAspect.value = 'custom'; lyrCustomAspect.value = layer.aspect; lyrCustomAspect.style.display = ''; }
+            else { lyrCustomAspect.style.display = 'none'; }
+            lyrStyle.value = layer.style;
+            lyrLineWidth.value = layer.lineWidth;
+            lyrColor.value = layer.color;
+            lyrName.value = layer.name;
         }
 
-        function getFormatConfig(suffix) {
-            return {
-                aspect: getGenAspect(suffix),
-                style: document.getElementById('genStyle' + suffix).value,
-                shading: parseFloat(document.getElementById('genShading' + suffix).value),
-                lineWidth: parseInt(document.getElementById('genLineWidth' + suffix).value) || 4,
-                color: document.getElementById('genColor' + suffix).value,
-                name: document.getElementById('genName' + suffix).value
-            };
+        function saveUIToLayer() {
+            const layer = genLayers[activeLayerIdx];
+            layer.aspect = lyrAspect.value === 'custom' ? (parseFloat(lyrCustomAspect.value) || 1.78) : parseFloat(lyrAspect.value);
+            layer.style = lyrStyle.value;
+            layer.lineWidth = parseInt(lyrLineWidth.value) || 4;
+            layer.color = lyrColor.value;
+            layer.name = lyrName.value;
         }
 
+        [lyrAspect, lyrStyle, lyrLineWidth, lyrColor, lyrName, lyrCustomAspect].forEach(el => {
+            el.addEventListener('change', () => {
+                lyrCustomAspect.style.display = lyrAspect.value === 'custom' ? '' : 'none';
+                saveUIToLayer(); updateGeneratorPreview();
+            });
+            el.addEventListener('input', () => { saveUIToLayer(); updateGeneratorPreview(); });
+        });
+
+        // Auto shade
+        lyrAutoShade.addEventListener('change', () => {
+            const val = lyrAutoShade.value;
+            if (!val) return;
+            const layer = genLayers[activeLayerIdx];
+            if (val === 'clear') { layer.rects = []; }
+            else {
+                if (!selectedFormat) { showError('Select a camera format first.'); lyrAutoShade.value = ''; return; }
+                const hres = selectedFormat.sensor_photosites.h, vres = selectedFormat.sensor_photosites.v;
+                const insets = calculateInsets(hres, vres, layer.aspect);
+                layer.rects = generateShadingRects(insets.topBottom, insets.leftRight, parseFloat(val));
+            }
+            selectedRect = null;
+            document.getElementById('rectPropsRow').style.display = 'none';
+            lyrAutoShade.value = '';
+            updateGeneratorPreview();
+        });
+
+        // Rect properties UI
+        const rpTop = document.getElementById('rpTop');
+        const rpBottom = document.getElementById('rpBottom');
+        const rpLeft = document.getElementById('rpLeft');
+        const rpRight = document.getElementById('rpRight');
+        const rpOpacity = document.getElementById('rpOpacity');
+        const rpDelete = document.getElementById('rpDelete');
+
+        function showRectProps(rect) {
+            rpTop.value = rect.top.toFixed(3); rpBottom.value = rect.bottom.toFixed(3);
+            rpLeft.value = rect.left.toFixed(3); rpRight.value = rect.right.toFixed(3);
+            rpOpacity.value = rect.opacity;
+            document.getElementById('rectPropsRow').style.display = 'flex';
+        }
+
+        [rpTop, rpBottom, rpLeft, rpRight, rpOpacity].forEach(el => {
+            el.addEventListener('input', () => {
+                if (!selectedRect) return;
+                const r = genLayers[selectedRect.layerIdx].rects[selectedRect.rectIdx];
+                r.top = parseFloat(rpTop.value) || 0; r.bottom = parseFloat(rpBottom.value) || 0;
+                r.left = parseFloat(rpLeft.value) || 0; r.right = parseFloat(rpRight.value) || 0;
+                r.opacity = parseFloat(rpOpacity.value) || 0;
+                updateGeneratorPreview();
+            });
+        });
+
+        rpDelete.addEventListener('click', () => {
+            if (!selectedRect) return;
+            genLayers[selectedRect.layerIdx].rects.splice(selectedRect.rectIdx, 1);
+            selectedRect = null;
+            document.getElementById('rectPropsRow').style.display = 'none';
+            updateGeneratorPreview();
+        });
+
+        // Canvas interaction helpers
+        function canvasNormCoords(e) {
+            const r = canvas.getBoundingClientRect();
+            return { x: Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)), y: Math.max(0, Math.min(1, (e.clientY - r.top) / r.height)) };
+        }
+
+        function hitTestRects(x, y) {
+            const order = [activeLayerIdx, ...[0,1,2].filter(i => i !== activeLayerIdx)];
+            for (const li of order) {
+                if (!genLayers[li].visible) continue;
+                for (let ri = genLayers[li].rects.length - 1; ri >= 0; ri--) {
+                    const r = genLayers[li].rects[ri];
+                    if (x >= r.left && x <= 1 - r.right && y >= r.top && y <= 1 - r.bottom) return { layerIdx: li, rectIdx: ri };
+                }
+            }
+            return null;
+        }
+
+        function getEdgeHit(rect, x, y) {
+            const x1 = rect.left, x2 = 1 - rect.right, y1 = rect.top, y2 = 1 - rect.bottom, t = 0.015;
+            if (Math.abs(y - y1) < t && x >= x1 - t && x <= x2 + t) return 'top';
+            if (Math.abs(y - y2) < t && x >= x1 - t && x <= x2 + t) return 'bottom';
+            if (Math.abs(x - x1) < t && y >= y1 - t && y <= y2 + t) return 'left';
+            if (Math.abs(x - x2) < t && y >= y1 - t && y <= y2 + t) return 'right';
+            return null;
+        }
+
+        // Canvas mouse events
+        canvas.addEventListener('mousedown', (e) => {
+            if (activeTab !== 'generate' || !selectedFormat) return;
+            const { x, y } = canvasNormCoords(e);
+
+            if (genTool === 'rect') {
+                const newRect = { top: y, bottom: 1 - y, left: x, right: 1 - x, opacity: 0.25, color: 'black' };
+                genLayers[activeLayerIdx].rects.push(newRect);
+                selectedRect = { layerIdx: activeLayerIdx, rectIdx: genLayers[activeLayerIdx].rects.length - 1 };
+                dragState = { type: 'draw', startX: x, startY: y };
+                showRectProps(newRect);
+            } else {
+                const hit = hitTestRects(x, y);
+                if (hit) {
+                    selectedRect = hit;
+                    const rect = genLayers[hit.layerIdx].rects[hit.rectIdx];
+                    showRectProps(rect);
+                    const edge = getEdgeHit(rect, x, y);
+                    dragState = edge
+                        ? { type: 'resize', edge, orig: { ...rect }, startX: x, startY: y }
+                        : { type: 'move', orig: { ...rect }, startX: x, startY: y };
+                    if (hit.layerIdx !== activeLayerIdx) setActiveLayer(hit.layerIdx);
+                } else {
+                    selectedRect = null;
+                    document.getElementById('rectPropsRow').style.display = 'none';
+                }
+                updateGeneratorPreview();
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (activeTab !== 'generate' || !selectedFormat) return;
+            const { x, y } = canvasNormCoords(e);
+
+            if (dragState && selectedRect) {
+                const rect = genLayers[selectedRect.layerIdx].rects[selectedRect.rectIdx];
+                if (dragState.type === 'draw') {
+                    rect.left = Math.min(dragState.startX, x); rect.right = 1 - Math.max(dragState.startX, x);
+                    rect.top = Math.min(dragState.startY, y); rect.bottom = 1 - Math.max(dragState.startY, y);
+                } else if (dragState.type === 'move') {
+                    const dx = x - dragState.startX, dy = y - dragState.startY;
+                    rect.left = Math.max(0, dragState.orig.left + dx); rect.right = Math.max(0, dragState.orig.right - dx);
+                    rect.top = Math.max(0, dragState.orig.top + dy); rect.bottom = Math.max(0, dragState.orig.bottom - dy);
+                } else if (dragState.type === 'resize') {
+                    const dx = x - dragState.startX, dy = y - dragState.startY;
+                    if (dragState.edge === 'top') rect.top = Math.max(0, Math.min(1 - rect.bottom - 0.01, dragState.orig.top + dy));
+                    else if (dragState.edge === 'bottom') rect.bottom = Math.max(0, Math.min(1 - rect.top - 0.01, dragState.orig.bottom - dy));
+                    else if (dragState.edge === 'left') rect.left = Math.max(0, Math.min(1 - rect.right - 0.01, dragState.orig.left + dx));
+                    else if (dragState.edge === 'right') rect.right = Math.max(0, Math.min(1 - rect.left - 0.01, dragState.orig.right - dx));
+                }
+                showRectProps(rect);
+                updateGeneratorPreview();
+            } else if (genTool === 'select') {
+                const hit = hitTestRects(x, y);
+                if (hit) {
+                    const edge = getEdgeHit(genLayers[hit.layerIdx].rects[hit.rectIdx], x, y);
+                    canvas.style.cursor = (edge === 'top' || edge === 'bottom') ? 'ns-resize' : (edge === 'left' || edge === 'right') ? 'ew-resize' : 'move';
+                } else { canvas.style.cursor = ''; }
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if (dragState && dragState.type === 'draw' && selectedRect) {
+                const r = genLayers[selectedRect.layerIdx].rects[selectedRect.rectIdx];
+                if ((1 - r.right) - r.left < 0.005 || (1 - r.bottom) - r.top < 0.005) {
+                    genLayers[selectedRect.layerIdx].rects.splice(selectedRect.rectIdx, 1);
+                    selectedRect = null; document.getElementById('rectPropsRow').style.display = 'none';
+                }
+            }
+            dragState = null; updateGeneratorPreview();
+        });
+
+        canvas.addEventListener('mouseleave', () => { if (dragState) { dragState = null; updateGeneratorPreview(); } });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (activeTab !== 'generate') return;
+            if ((e.key === 'Delete' || e.key === 'Backspace') && selectedRect && document.activeElement.tagName !== 'INPUT') {
+                genLayers[selectedRect.layerIdx].rects.splice(selectedRect.rectIdx, 1);
+                selectedRect = null; document.getElementById('rectPropsRow').style.display = 'none';
+                updateGeneratorPreview(); e.preventDefault();
+            }
+            if (e.key === 'Escape') {
+                selectedRect = null; document.getElementById('rectPropsRow').style.display = 'none';
+                updateGeneratorPreview();
+            }
+        });
+
+        // Selection overlay drawing
+        function drawSelectionOverlay() {
+            if (!selectedRect || activeTab !== 'generate') return;
+            const r = genLayers[selectedRect.layerIdx].rects[selectedRect.rectIdx];
+            const x1 = r.left * canvas.width, y1 = r.top * canvas.height;
+            const x2 = (1 - r.right) * canvas.width, y2 = (1 - r.bottom) * canvas.height;
+
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+            ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+            ctx.strokeStyle = '#000'; ctx.lineDashOffset = 4;
+            ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+            ctx.setLineDash([]); ctx.lineDashOffset = 0;
+
+            const hs = 4, mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+            ctx.fillStyle = '#fff'; ctx.strokeStyle = '#000'; ctx.lineWidth = 1;
+            [[mx, y1], [mx, y2], [x1, my], [x2, my], [x1, y1], [x2, y1], [x1, y2], [x2, y2]].forEach(([hx, hy]) => {
+                ctx.fillRect(hx - hs, hy - hs, hs * 2, hs * 2);
+                ctx.strokeRect(hx - hs, hy - hs, hs * 2, hs * 2);
+            });
+        }
+
+        // Helper functions
         function calculateInsets(hres, vres, targetAspect) {
             const sensorAspect = hres / vres;
             let topBottom = 0, leftRight = 0;
-            if (targetAspect > sensorAspect) {
-                const frameHeight = hres / targetAspect;
-                topBottom = ((vres - frameHeight) / 2) / vres;
-            } else if (targetAspect < sensorAspect) {
-                const frameWidth = vres * targetAspect;
-                leftRight = ((hres - frameWidth) / 2) / hres;
-            }
+            if (targetAspect > sensorAspect) { topBottom = ((vres - hres / targetAspect) / 2) / vres; }
+            else if (targetAspect < sensorAspect) { leftRight = ((hres - vres * targetAspect) / 2) / hres; }
             return { topBottom, leftRight };
         }
 
@@ -1585,20 +1931,16 @@
         }
 
         function generateCornerLines(formatId, topBottom, leftRight, lineWidth, color, tickLength = 0.1) {
-            const lines = [];
-            // Top-left corner
-            lines.push({ framelineRect: formatId, top: topBottom, bottom: null, left: leftRight, right: 1 - leftRight - tickLength, width: lineWidth, color });
-            lines.push({ framelineRect: formatId, top: topBottom, bottom: 1 - topBottom - tickLength, left: leftRight, right: null, width: lineWidth, color });
-            // Top-right corner
-            lines.push({ framelineRect: formatId, top: topBottom, bottom: null, left: 1 - leftRight - tickLength, right: leftRight, width: lineWidth, color });
-            lines.push({ framelineRect: formatId, top: topBottom, bottom: 1 - topBottom - tickLength, left: null, right: leftRight, width: lineWidth, color });
-            // Bottom-left corner
-            lines.push({ framelineRect: formatId, top: null, bottom: topBottom, left: leftRight, right: 1 - leftRight - tickLength, width: lineWidth, color });
-            lines.push({ framelineRect: formatId, top: 1 - topBottom - tickLength, bottom: topBottom, left: leftRight, right: null, width: lineWidth, color });
-            // Bottom-right corner
-            lines.push({ framelineRect: formatId, top: null, bottom: topBottom, left: 1 - leftRight - tickLength, right: leftRight, width: lineWidth, color });
-            lines.push({ framelineRect: formatId, top: 1 - topBottom - tickLength, bottom: topBottom, left: null, right: leftRight, width: lineWidth, color });
-            return lines;
+            const l = [];
+            l.push({ framelineRect: formatId, top: topBottom, bottom: null, left: leftRight, right: 1 - leftRight - tickLength, width: lineWidth, color });
+            l.push({ framelineRect: formatId, top: topBottom, bottom: 1 - topBottom - tickLength, left: leftRight, right: null, width: lineWidth, color });
+            l.push({ framelineRect: formatId, top: topBottom, bottom: null, left: 1 - leftRight - tickLength, right: leftRight, width: lineWidth, color });
+            l.push({ framelineRect: formatId, top: topBottom, bottom: 1 - topBottom - tickLength, left: null, right: leftRight, width: lineWidth, color });
+            l.push({ framelineRect: formatId, top: null, bottom: topBottom, left: leftRight, right: 1 - leftRight - tickLength, width: lineWidth, color });
+            l.push({ framelineRect: formatId, top: 1 - topBottom - tickLength, bottom: topBottom, left: leftRight, right: null, width: lineWidth, color });
+            l.push({ framelineRect: formatId, top: null, bottom: topBottom, left: 1 - leftRight - tickLength, right: leftRight, width: lineWidth, color });
+            l.push({ framelineRect: formatId, top: 1 - topBottom - tickLength, bottom: topBottom, left: null, right: leftRight, width: lineWidth, color });
+            return l;
         }
 
         function getAutoFormatName(aspect) {
@@ -1607,144 +1949,13 @@
             return `AspectRatio:${aspect.toFixed(2)}:1_Scal100`;
         }
 
-        function buildFrameDataFromConfig() {
-            if (!selectedFormat) return null;
-
-            const hres = selectedFormat.sensor_photosites.h;
-            const vres = selectedFormat.sensor_photosites.v;
-            const camera = {
-                type: selectedCamera.model,
-                sensor: selectedFormat.recording_resolution || '',
-                aspect: parseFloat((hres / vres).toFixed(2)),
-                hres, vres
-            };
-
-            const rects = [];
-            const lines = [];
-            const framelineNames = {};
-
-            const cfgA = getFormatConfig('A');
-            const insetsA = calculateInsets(hres, vres, cfgA.aspect);
-            const nameA = cfgA.name || getAutoFormatName(cfgA.aspect);
-            framelineNames['formatA'] = nameA;
-
-            rects.push(...generateShadingRects(insetsA.topBottom, insetsA.leftRight, cfgA.shading));
-
-            if (cfgA.style === 'fullbox') {
-                lines.push(...generateFullBoxLines('formatA', insetsA.topBottom, insetsA.leftRight, cfgA.lineWidth, cfgA.color));
-            } else {
-                lines.push(...generateCornerLines('formatA', insetsA.topBottom, insetsA.leftRight, cfgA.lineWidth, cfgA.color));
-            }
-
-            if (genEnableB.checked) {
-                const cfgB = getFormatConfig('B');
-                const insetsB = calculateInsets(hres, vres, cfgB.aspect);
-                const nameB = cfgB.name || getAutoFormatName(cfgB.aspect);
-                framelineNames['formatB'] = nameB;
-
-                rects.push(...generateShadingRects(insetsB.topBottom, insetsB.leftRight, cfgB.shading));
-
-                if (cfgB.style === 'fullbox') {
-                    lines.push(...generateFullBoxLines('formatB', insetsB.topBottom, insetsB.leftRight, cfgB.lineWidth, cfgB.color));
-                } else {
-                    lines.push(...generateCornerLines('formatB', insetsB.topBottom, insetsB.leftRight, cfgB.lineWidth, cfgB.color));
-                }
-            }
-
-            return { camera, rects, lines, framelineNames };
-        }
-
-        function updateGeneratorPreview() {
-            const data = buildFrameDataFromConfig();
-            if (data) {
-                frameData = data;
-                drawFramelines(data);
-            } else {
-                drawPlaceholder();
-            }
-        }
-
-        // XML string generation
-        function generateXMLString() {
-            const data = buildFrameDataFromConfig();
-            if (!data) return null;
-
-            const { camera } = data;
-            const cfgA = getFormatConfig('A');
-            const insetsA = calculateInsets(camera.hres, camera.vres, cfgA.aspect);
-            const nameA = cfgA.name || getAutoFormatName(cfgA.aspect);
-
-            let xml = `<?xml version="1.0" encoding="UTF-8"?>\n\n`;
-            xml += `<!-- Generated by ARRI Framelines Visualizer -->\n`;
-            xml += `<!-- camera model: ${camera.type} -->\n`;
-            xml += `<!-- clip resolution h: ${camera.hres} -->\n`;
-            xml += `<!-- clip resolution v: ${camera.vres} -->\n\n`;
-
-            xml += `<framelines>\n`;
-            xml += `\t<camera>\n`;
-            xml += `\t\t<type>${camera.type}</type>\n`;
-            xml += `\t\t<sensor>${camera.sensor}</sensor>\n`;
-            xml += `\t\t<aspect>${camera.aspect}</aspect>\n`;
-            xml += `\t\t<hres>${camera.hres}</hres>\n`;
-            xml += `\t\t<vres>${camera.vres}</vres>\n`;
-            xml += `\t</camera>\n`;
-            xml += `\t<surround>\n\t\t<opacity>0</opacity>\n\t</surround>\n`;
-
-            // Format A shading rects
-            xml += genRectsXML(insetsA, cfgA.shading, 'formatA');
-
-            // Format A frameline name + lines
-            xml += `\t<framelineName framelineRect="formatA">${escapeXml(nameA)}</framelineName>\n`;
-            xml += genLinesXML('formatA', insetsA, cfgA);
-
-            if (genEnableB.checked) {
-                const cfgB = getFormatConfig('B');
-                const insetsB = calculateInsets(camera.hres, camera.vres, cfgB.aspect);
-                const nameB = cfgB.name || getAutoFormatName(cfgB.aspect);
-
-                xml += genRectsXML(insetsB, cfgB.shading, 'formatB');
-                xml += `\t<framelineName framelineRect="formatB">${escapeXml(nameB)}</framelineName>\n`;
-                xml += genLinesXML('formatB', insetsB, cfgB);
-            }
-
-            xml += `</framelines>\n`;
-            return xml;
-        }
-
         function escapeXml(s) {
             return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
-        function genRectsXML(insets, opacity, label) {
-            if (opacity === 0) return '';
-            const tb = insets.topBottom;
-            const lr = insets.leftRight;
-            let xml = `\t<!-- Shading ${label} -->\n`;
-            const rects = [
-                { top: 0, bottom: 1 - tb, left: 0, right: lr, comment: 'top' },
-                { top: 1 - tb, bottom: 0, left: 0, right: lr, comment: 'bottom' },
-                { top: tb, bottom: tb, left: 0, right: 1 - lr, comment: 'left' },
-                { top: tb, bottom: tb, left: 1 - lr, right: 0, comment: 'right' }
-            ];
-            for (const r of rects) {
-                xml += `\t<!-- ${label} ${r.comment} dimming -->\n`;
-                xml += `\t<rect>\n`;
-                xml += `\t\t<top>${r.top}</top>\n`;
-                xml += `\t\t<bottom>${r.bottom}</bottom>\n`;
-                xml += `\t\t<left>${r.left}</left>\n`;
-                xml += `\t\t<right>${r.right}</right>\n`;
-                xml += `\t\t<border>\n\t\t\t<width>0</width>\n\t\t\t<color>black</color>\n\t\t</border>\n`;
-                xml += `\t\t<fill>\n\t\t\t<color>black</color>\n\t\t\t<opacity>${opacity}</opacity>\n\t\t</fill>\n`;
-                xml += `\t</rect>\n`;
-            }
-            return xml;
-        }
-
         function genLinesXML(formatId, insets, cfg) {
-            const tb = insets.topBottom;
-            const lr = insets.leftRight;
+            const tb = insets.topBottom, lr = insets.leftRight;
             let xml = '';
-
             if (cfg.style === 'fullbox') {
                 xml += `\t<line framelineRect="${formatId}">\n\t\t<top>${tb}</top>\n\t\t<left>${lr}</left>\n\t\t<right>${lr}</right>\n\t\t<width>${cfg.lineWidth}</width>\n\t\t<color>${cfg.color}</color>\n\t</line>\n`;
                 xml += `\t<line framelineRect="${formatId}">\n\t\t<bottom>${tb}</bottom>\n\t\t<left>${lr}</left>\n\t\t<right>${lr}</right>\n\t\t<width>${cfg.lineWidth}</width>\n\t\t<color>${cfg.color}</color>\n\t</line>\n`;
@@ -1752,19 +1963,17 @@
                 xml += `\t<line framelineRect="${formatId}">\n\t\t<top>${tb}</top>\n\t\t<bottom>${tb}</bottom>\n\t\t<right>${lr}</right>\n\t\t<width>${cfg.lineWidth}</width>\n\t\t<color>${cfg.color}</color>\n\t</line>\n`;
             } else {
                 const tick = 0.1;
-                // 8 corner lines
                 const corners = [
-                    { comment: 'Left top', top: tb, left: lr, right: 1 - lr - tick },
-                    { comment: 'Right top', top: tb, left: 1 - lr - tick, right: lr },
-                    { comment: 'Left bottom', bottom: tb, left: lr, right: 1 - lr - tick },
-                    { comment: 'Right bottom', bottom: tb, left: 1 - lr - tick, right: lr },
-                    { comment: 'Top left', top: tb, bottom: 1 - tb - tick, left: lr },
-                    { comment: 'Top right', top: tb, bottom: 1 - tb - tick, right: lr },
-                    { comment: 'Bottom left', bottom: tb, top: 1 - tb - tick, left: lr },
-                    { comment: 'Bottom right', bottom: tb, top: 1 - tb - tick, right: lr }
+                    { c: 'TL-h', top: tb, left: lr, right: 1 - lr - tick },
+                    { c: 'TR-h', top: tb, left: 1 - lr - tick, right: lr },
+                    { c: 'BL-h', bottom: tb, left: lr, right: 1 - lr - tick },
+                    { c: 'BR-h', bottom: tb, left: 1 - lr - tick, right: lr },
+                    { c: 'TL-v', top: tb, bottom: 1 - tb - tick, left: lr },
+                    { c: 'TR-v', top: tb, bottom: 1 - tb - tick, right: lr },
+                    { c: 'BL-v', bottom: tb, top: 1 - tb - tick, left: lr },
+                    { c: 'BR-v', bottom: tb, top: 1 - tb - tick, right: lr }
                 ];
                 for (const c of corners) {
-                    xml += `\t<!-- ${c.comment} -->\n`;
                     xml += `\t<line framelineRect="${formatId}">\n`;
                     if (c.top !== undefined) xml += `\t\t<top>${c.top}</top>\n`;
                     if (c.bottom !== undefined) xml += `\t\t<bottom>${c.bottom}</bottom>\n`;
@@ -1776,29 +1985,94 @@
             return xml;
         }
 
-        function getAutoFilename() {
-            if (!selectedCamera || !selectedFormat) return 'framelines.xml';
-            const cam = selectedCamera.model.replace(/\s+/g, '-');
-            const fmt = selectedFormat.name.replace(/[\s:]+/g, '-');
-            return `FL_${cam}_${fmt}.xml`;
+        // Build frame data from layers
+        function buildGenFrameData() {
+            if (!selectedFormat) return null;
+            const hres = selectedFormat.sensor_photosites.h, vres = selectedFormat.sensor_photosites.v;
+            const camera = { type: selectedCamera.model, sensor: selectedFormat.recording_resolution || '', aspect: parseFloat((hres / vres).toFixed(2)), hres, vres };
+            const rects = [], lines = [], framelineNames = {};
+            const ids = ['formatA', 'formatB', 'formatC'];
+
+            genLayers.forEach((layer, idx) => {
+                if (!layer.visible) return;
+                const fid = ids[idx];
+                framelineNames[fid] = layer.name || getAutoFormatName(layer.aspect);
+                layer.rects.forEach(r => rects.push({ ...r }));
+                const insets = calculateInsets(hres, vres, layer.aspect);
+                if (layer.style === 'fullbox') lines.push(...generateFullBoxLines(fid, insets.topBottom, insets.leftRight, layer.lineWidth, layer.color));
+                else lines.push(...generateCornerLines(fid, insets.topBottom, insets.leftRight, layer.lineWidth, layer.color));
+            });
+            return { camera, rects, lines, framelineNames };
         }
 
+        function updateGeneratorPreview() {
+            if (activeTab !== 'generate') return;
+            const data = buildGenFrameData();
+            if (data) { frameData = data; drawFramelines(data); drawSelectionOverlay(); }
+            else { drawPlaceholder(); }
+        }
+
+        // XML generation
+        function generateXMLString() {
+            const data = buildGenFrameData();
+            if (!data) return null;
+            const { camera } = data;
+            let xml = `<?xml version="1.0" encoding="UTF-8"?>\n\n`;
+            xml += `<!-- Generated by Unofficial ARRI Framelines Visualizer -->\n`;
+            xml += `<!-- camera model: ${camera.type} -->\n`;
+            xml += `<!-- clip resolution h: ${camera.hres} -->\n`;
+            xml += `<!-- clip resolution v: ${camera.vres} -->\n\n`;
+            xml += `<framelines>\n\t<camera>\n\t\t<type>${camera.type}</type>\n\t\t<sensor>${camera.sensor}</sensor>\n`;
+            xml += `\t\t<aspect>${camera.aspect}</aspect>\n\t\t<hres>${camera.hres}</hres>\n\t\t<vres>${camera.vres}</vres>\n\t</camera>\n`;
+            xml += `\t<surround>\n\t\t<opacity>0</opacity>\n\t</surround>\n`;
+
+            const ids = ['formatA', 'formatB', 'formatC'];
+            genLayers.forEach((layer, idx) => {
+                if (!layer.visible) return;
+                const fid = ids[idx];
+                if (layer.rects.length > 0) {
+                    xml += `\t<!-- Shading ${fid} -->\n`;
+                    layer.rects.forEach(r => {
+                        xml += `\t<rect>\n\t\t<top>${r.top}</top>\n\t\t<bottom>${r.bottom}</bottom>\n\t\t<left>${r.left}</left>\n\t\t<right>${r.right}</right>\n`;
+                        xml += `\t\t<border>\n\t\t\t<width>0</width>\n\t\t\t<color>black</color>\n\t\t</border>\n`;
+                        xml += `\t\t<fill>\n\t\t\t<color>${r.color || 'black'}</color>\n\t\t\t<opacity>${r.opacity}</opacity>\n\t\t</fill>\n\t</rect>\n`;
+                    });
+                }
+                const name = layer.name || getAutoFormatName(layer.aspect);
+                xml += `\t<framelineName framelineRect="${fid}">${escapeXml(name)}</framelineName>\n`;
+                const insets = calculateInsets(camera.hres, camera.vres, layer.aspect);
+                xml += genLinesXML(fid, insets, layer);
+            });
+            xml += `</framelines>\n`;
+            return xml;
+        }
+
+        function getAutoFilename() {
+            if (!selectedCamera || !selectedFormat) return 'framelines.xml';
+            return `FL_${selectedCamera.model.replace(/\s+/g, '-')}_${selectedFormat.name.replace(/[\s:]+/g, '-')}.xml`;
+        }
+
+        // Resize handler
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (activeTab === 'generate') updateGeneratorPreview();
+                else if (frameData) drawFramelines(frameData);
+                else drawPlaceholder();
+            }, 100);
+        });
+
         genDownloadBtn.addEventListener('click', () => {
-            if (!selectedFormat) {
-                showError('Please select a camera and format first.');
-                return;
-            }
+            if (!selectedFormat) { showError('Please select a camera and format first.'); return; }
             const xmlString = generateXMLString();
             if (!xmlString) return;
-
             const filename = document.getElementById('genFilename').value || getAutoFilename();
             const blob = new Blob([xmlString], { type: 'application/xml' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = filename.endsWith('.xml') ? filename : filename + '.xml';
-            a.click();
-            URL.revokeObjectURL(url);
+            a.href = url; a.download = filename.endsWith('.xml') ? filename : filename + '.xml';
+            a.click(); URL.revokeObjectURL(url);
         });
     </script>
 </body>
